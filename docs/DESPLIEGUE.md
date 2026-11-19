@@ -20,6 +20,9 @@ SUPABASE_URL=http://127.0.0.1:54321 SUPABASE_SECRET_KEY=... npm run create-admin
 Los correos de prueba se ven en http://127.0.0.1:54324. Sin credenciales S3 de R2, las subidas pasan por el Worker, con un límite de 100 MB por archivo.
 
 ## 2. Supabase (producción)
+> **Estado actual:** el proyecto `yupiii` (ref `ifbmxalfqiyqlqdpenbo`, São Paulo) ya está creado, con las 6 migraciones aplicadas y las 71 pruebas de seguridad aprobadas. Faltan los pasos 3 a 8. Si luego enlazas la CLI, marca las migraciones como aplicadas para no repetirlas:
+> `npx supabase link --project-ref ifbmxalfqiyqlqdpenbo` y luego `npx supabase migration repair --status applied 20261119000001 20261119000002 20261119000003 20261119000004 20261119000005 20261119000006`.
+
 1. Crea un proyecto. Para Chile y Haití se recomienda la región `sa-east-1` (São Paulo).
 2. Aplica las migraciones: `npx supabase link --project-ref <ref>` y luego `npx supabase db push`.
 3. En **Authentication → Providers → Email**, desactiva *Allow new users to sign up*. El aula es privada.

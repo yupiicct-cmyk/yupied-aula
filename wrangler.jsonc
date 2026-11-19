@@ -24,10 +24,10 @@
       "name": "yupiii",
       "vars": {
         "APP_NAME": "Yupiii",
-        "SUPABASE_URL": "https://REEMPLAZAR.supabase.co",
-        "SUPABASE_PUBLISHABLE_KEY": "REEMPLAZAR",
+        "SUPABASE_URL": "https://ifbmxalfqiyqlqdpenbo.supabase.co",
+        "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_PBDo9bLzBrQjQIFhvZQZ4g_ZSOSaW2R",
         "R2_BUCKET_NAME": "yupiii-files-prod",
-        "R2_ACCOUNT_ID": "REEMPLAZAR",
+        "R2_ACCOUNT_ID": "",
         "MAX_UPLOAD_MB": "200"
       },
       "r2_buckets": [{ "binding": "FILES", "bucket_name": "yupiii-files-prod" }],
