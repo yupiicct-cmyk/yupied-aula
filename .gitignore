@@ -7,3 +7,4 @@ build/
 worker-configuration.d.ts
 supabase/.temp/
 coverage/
+desplegar.log

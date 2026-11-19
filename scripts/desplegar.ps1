@@ -1,9 +1,11 @@
 ﻿# Despliegue de Yupiii en Cloudflare Workers (Windows / PowerShell).
 # Ejecutar con doble clic en DESPLEGAR.bat
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
 Set-Location (Split-Path $PSScriptRoot -Parent)
+Start-Transcript -Path (Join-Path (Get-Location) "desplegar.log") -Force | Out-Null
+trap { Write-Host "ERROR INESPERADO: $_" -ForegroundColor Red; Stop-Transcript | Out-Null; Read-Host "Presiona Enter para cerrar"; exit 1 }
 function Paso($n, $t) { Write-Host ""; Write-Host "=== Paso $n · $t ===" -ForegroundColor Cyan }
-function Falla($t) { Write-Host ""; Write-Host "ERROR: $t" -ForegroundColor Red; exit 1 }
+function Falla($t) { Write-Host ""; Write-Host "ERROR: $t" -ForegroundColor Red; Stop-Transcript | Out-Null; Read-Host "Presiona Enter para cerrar"; exit 1 }
 
 Paso 1 "Comprobando Node.js"
 try { $v = (node --version) } catch { Falla "Node.js no está instalado. Descarga la versión LTS en https://nodejs.org y vuelve a ejecutar DESPLEGAR.bat" }
@@ -65,3 +67,5 @@ $secret = $null
 Write-Host ""
 Write-Host "Yupiii está publicado. La dirección aparece arriba (https://yupiii.<subdominio>.workers.dev)." -ForegroundColor Green
 Write-Host "Copia esa dirección y envíasela a Claude para terminar la configuración de Supabase y revisar las pantallas."
+Stop-Transcript | Out-Null
+Read-Host "Presiona Enter para cerrar"
