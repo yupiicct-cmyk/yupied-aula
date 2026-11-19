@@ -17,11 +17,28 @@ Paso 2 "Instalando dependencias (puede tardar unos minutos)"
 npm install --no-audit --no-fund
 if ($LASTEXITCODE -ne 0) { Falla "npm install falló" }
 
-Paso 3 "Iniciando sesión en Cloudflare"
-Write-Host "Se abrirá el navegador: pulsa 'Allow' para autorizar Wrangler."
+Paso 3 "Conectando con tu cuenta de Cloudflare"
+$tokenFile = Join-Path $env:USERPROFILE ".yupiii-cf-token"
+if (Test-Path $tokenFile) {
+  $env:CLOUDFLARE_API_TOKEN = (Get-Content $tokenFile -Raw).Trim()
+} else {
+  Write-Host "Se abrirá la página de tokens de Cloudflare:"
+  Write-Host "  1) Pulsa 'Create Token'  2) Elige la plantilla 'Edit Cloudflare Workers' -> 'Use template'"
+  Write-Host "  3) En 'Account Resources' deja tu cuenta, baja y pulsa 'Continue to summary' -> 'Create Token'"
+  Write-Host "  4) Copia el token y pégalo aquí (no se mostrará)."
+  Start-Process "https://dash.cloudflare.com/profile/api-tokens"
+  $t = Read-Host "Token de Cloudflare" -AsSecureString
+  $env:CLOUDFLARE_API_TOKEN = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($t))
+}
 $who = (npx wrangler whoami 2>&1) -join "`n"
-if ($who -notmatch "logged in") { npx wrangler login; if ($LASTEXITCODE -ne 0) { Falla "No se pudo iniciar sesión en Cloudflare" } }
-npx wrangler whoami
+Write-Host $who
+if ($who -notmatch "(?i)account id|associated with the email|logged in") {
+  if (Test-Path $tokenFile) { Remove-Item $tokenFile }
+  Falla "El token no fue aceptado. Vuelve a ejecutar DESPLEGAR.bat y crea un token nuevo con la plantilla 'Edit Cloudflare Workers'."
+}
+# Se guarda solo en tu perfil de Windows para no pedirlo de nuevo
+Set-Content -Path $tokenFile -Value $env:CLOUDFLARE_API_TOKEN -NoNewline
+Write-Host "Cuenta de Cloudflare conectada" -ForegroundColor Green
 
 Paso 4 "Almacenamiento de archivos (R2)"
 $buckets = (npx wrangler r2 bucket list 2>&1) -join "`n"
