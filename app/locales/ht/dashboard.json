@@ -1,0 +1,37 @@
+{
+  "all_done": "Tout a jou!",
+  "chart": {
+    "attendance": "Prezans pa sesyon",
+    "distribution": "Distribisyon nòt yo",
+    "grades": "Mwayèn pa evalyasyon",
+    "students": "Nòt"
+  },
+  "completion": "{{pct}} % aktivite fini",
+  "continue_learning": "Kontinye aprann",
+  "hello": "Bonjou, {{name}}",
+  "kpi": {
+    "assessments": "Evalyasyon",
+    "attendance": "Mwayèn prezans",
+    "courses": "Kou aktif",
+    "lessons": "Sesyon pibliye",
+    "materials": "Materyèl",
+    "modules": "Modil",
+    "pending": "Aktivite pou korije",
+    "performance": "Rezilta jeneral",
+    "students": "Elèv"
+  },
+  "last_class": "Dènye klas",
+  "my_progress": "Pwogrè",
+  "next_session": "Pwochen sesyon",
+  "no_course": "Ou poko gen kou",
+  "no_course_hint": "Kreye premye kou ou pou kòmanse.",
+  "no_data": "Poko gen ase done.",
+  "no_enrollment": "Ou poko enskri nan yon kou",
+  "no_enrollment_hint": "Pwofesè ou ap enskri w byento.",
+  "nothing_pending": "Pa gen travay pou korije.",
+  "pending_activities": "Aktivite ki rete",
+  "pending_review": "Travay pou korije",
+  "recent_materials": "Materyèl resan",
+  "title": "Tablo pwofesè a",
+  "upcoming_assessments": "Pwochen evalyasyon"
+}

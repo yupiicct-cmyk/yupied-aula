@@ -1,0 +1,9 @@
+{
+  "not_available": "Este contenido aún no está traducido a tu idioma. Se muestra en {{lang}}.",
+  "optional": "Traducción (opcional)",
+  "original": "Original",
+  "original_language": "Idioma original",
+  "propose": "Proponer {{lang}} con IA",
+  "review_notice": "Traducción automática propuesta: revísala y márcala como «Aprobada» antes de publicar. Los estudiantes no la verán hasta entonces.",
+  "status": "Estado de la traducción"
+}

@@ -1,0 +1,13 @@
+{
+  "kinds": {
+    "activity_published": "Nouvelle activité",
+    "announcement": "Nouvelle annonce",
+    "assessment_published": "Nouvelle évaluation",
+    "grade": "Nouvelle note",
+    "lesson_published": "Nouvelle séance disponible",
+    "message": "Nouveau message",
+    "submission": "Nouvelle remise à corriger"
+  },
+  "mark_all": "Tout marquer comme lu",
+  "none": "Aucune notification."
+}

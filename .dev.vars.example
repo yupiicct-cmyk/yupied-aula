@@ -1,0 +1,5 @@
+# Copiar a .dev.vars (no se sube a git)
+SUPABASE_SECRET_KEY=
+SESSION_SECRET=cambia-esto-por-32-caracteres-aleatorios
+R2_ACCESS_KEY_ID=
+R2_SECRET_ACCESS_KEY=

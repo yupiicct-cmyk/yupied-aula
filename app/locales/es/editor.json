@@ -1,0 +1,15 @@
+{
+  "bold": "Negrita",
+  "bullets": "Lista",
+  "heading": "Título",
+  "image": "Insertar imagen",
+  "image_prompt": "URL de la imagen (o /files/material/ID de la biblioteca):",
+  "italic": "Cursiva",
+  "link": "Enlace",
+  "link_prompt": "Dirección del enlace:",
+  "numbered": "Lista numerada",
+  "quote": "Cita",
+  "subheading": "Subtítulo",
+  "underline": "Subrayado",
+  "undo": "Deshacer"
+}

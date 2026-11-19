@@ -1,0 +1,11 @@
+{
+  "audience": "Destinataires",
+  "create": "Nouvelle annonce",
+  "general": "Annonce générale",
+  "message": "Message",
+  "none": "Aucune annonce.",
+  "now_if_empty": "Vide = publier maintenant.",
+  "pin": "Épingler",
+  "publish": "Publier l'annonce",
+  "published": "Annonce publiée."
+}

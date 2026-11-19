@@ -1,0 +1,2 @@
+{ "name": "Yupiii", "short_name": "Yupiii", "start_url": "/app", "display": "standalone", "background_color": "#08265E", "theme_color": "#08265E",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }] }

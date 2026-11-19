@@ -1,0 +1,12 @@
+{
+  "create_first": "Kreye yon sesyon prezans.",
+  "new_session": "Nouvo apèl",
+  "none": "Pa gen prezans anrejistre.",
+  "note": "Nòt",
+  "percentage": "Pousantaj prezans",
+  "session_created": "Sesyon an kreye. Make prezans yo.",
+  "sessions": "Sesyon anrejistre",
+  "summary": "P {{present}} · R {{late}} · A {{absent}} · J {{excused}}",
+  "title": "Prezans",
+  "total_sessions": "Total sesyon"
+}

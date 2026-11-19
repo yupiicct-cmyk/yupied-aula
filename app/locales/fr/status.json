@@ -1,0 +1,22 @@
+{
+  "absent": "Absent",
+  "active": "Actif",
+  "ai_proposed": "Proposition IA (à réviser)",
+  "approved": "Approuvée",
+  "archived": "Archivé",
+  "completed": "Terminée",
+  "draft": "Brouillon",
+  "excused": "Justifié",
+  "graded": "Noté",
+  "in_progress": "En cours",
+  "inactive": "Inactif",
+  "late": "En retard",
+  "pending": "En attente",
+  "present": "Présent",
+  "published": "Publié",
+  "ready": "Disponible",
+  "returned": "Renvoyé",
+  "scheduled": "Programmé",
+  "submitted": "Remis",
+  "viewed": "Consultée"
+}

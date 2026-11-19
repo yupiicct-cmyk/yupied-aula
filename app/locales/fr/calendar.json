@@ -1,0 +1,14 @@
+{
+  "add_event": "Ajouter un événement",
+  "kinds": {
+    "announcement": "Annonce",
+    "assessment": "Évaluation",
+    "class": "Cours",
+    "deadline": "Date limite",
+    "event": "Événement",
+    "lesson": "Séance"
+  },
+  "next": "Mois suivant",
+  "previous": "Mois précédent",
+  "type": "Type"
+}

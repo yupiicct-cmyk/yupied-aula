@@ -1,0 +1,14 @@
+{
+  "add_event": "Ajoute evènman",
+  "kinds": {
+    "announcement": "Anons",
+    "assessment": "Evalyasyon",
+    "class": "Klas",
+    "deadline": "Dat limit",
+    "event": "Evènman",
+    "lesson": "Sesyon"
+  },
+  "next": "Mwa pwochen",
+  "previous": "Mwa pase",
+  "type": "Kalite"
+}

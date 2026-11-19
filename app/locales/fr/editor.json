@@ -1,0 +1,15 @@
+{
+  "bold": "Gras",
+  "bullets": "Liste à puces",
+  "heading": "Titre",
+  "image": "Insérer une image",
+  "image_prompt": "URL de l'image (ou /files/material/ID de la bibliothèque) :",
+  "italic": "Italique",
+  "link": "Lien",
+  "link_prompt": "Adresse du lien :",
+  "numbered": "Liste numérotée",
+  "quote": "Citation",
+  "subheading": "Sous-titre",
+  "underline": "Souligné",
+  "undo": "Annuler"
+}

@@ -1,0 +1,12 @@
+{
+  "create_first": "Créez une séance de présence.",
+  "new_session": "Nouvel appel",
+  "none": "Aucune présence enregistrée.",
+  "note": "Remarque",
+  "percentage": "Taux de présence",
+  "session_created": "Séance créée. Faites l'appel.",
+  "sessions": "Séances enregistrées",
+  "summary": "P {{present}} · R {{late}} · A {{absent}} · J {{excused}}",
+  "title": "Présence",
+  "total_sessions": "Total des séances"
+}

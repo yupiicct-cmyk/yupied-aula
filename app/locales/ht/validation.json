@@ -1,0 +1,20 @@
+{
+  "blanks_required": "Bay repons pou chak espas.",
+  "choose_correct": "Make bon repons lan.",
+  "date": "Dat la pa valab.",
+  "date_order": "Dat fen an dwe vini apre dat kòmansman an.",
+  "email": "Imèl la pa valab.",
+  "invalid": "Valè a pa valab.",
+  "items_required": "Ajoute omwen de eleman.",
+  "max": "Valè a twò wo.",
+  "min": "Valè a twò ba.",
+  "number": "Sa dwe yon nimewo.",
+  "pairs_required": "Ajoute omwen de pè.",
+  "password_letter": "Modpas la dwe gen lèt.",
+  "password_match": "Modpas yo pa menm.",
+  "password_min": "Omwen 8 karaktè.",
+  "password_number": "Modpas la dwe gen chif.",
+  "prompt_required": "Ekri enonse kesyon an.",
+  "required": "Chan sa a obligatwa.",
+  "too_long": "Twò long."
+}

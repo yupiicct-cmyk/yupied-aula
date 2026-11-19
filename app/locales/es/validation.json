@@ -1,0 +1,20 @@
+{
+  "blanks_required": "Indica la respuesta de cada espacio.",
+  "choose_correct": "Marca la respuesta correcta.",
+  "date": "Fecha inválida.",
+  "date_order": "La fecha de término debe ser posterior a la de inicio.",
+  "email": "Correo electrónico inválido.",
+  "invalid": "Valor inválido.",
+  "items_required": "Agrega al menos dos elementos.",
+  "max": "Valor demasiado alto.",
+  "min": "Valor demasiado bajo.",
+  "number": "Debe ser un número.",
+  "pairs_required": "Agrega al menos dos pares.",
+  "password_letter": "La contraseña debe incluir letras.",
+  "password_match": "Las contraseñas no coinciden.",
+  "password_min": "Mínimo 8 caracteres.",
+  "password_number": "La contraseña debe incluir números.",
+  "prompt_required": "Escribe el enunciado de la pregunta.",
+  "required": "Campo obligatorio.",
+  "too_long": "Demasiado largo."
+}

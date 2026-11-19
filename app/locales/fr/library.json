@@ -1,0 +1,32 @@
+{
+  "all": "Tous les fichiers",
+  "all_types": "Tous les types",
+  "count": "{{count}} fichiers",
+  "delete_folder_confirm": "Supprimer le dossier ? Les fichiers resteront sans dossier.",
+  "download": "Télécharger",
+  "drop_hint": "Glissez ici ou cliquez · PDF, Word, PowerPoint, Excel, images, MP4, MP3",
+  "empty": "Aucun matériel.",
+  "hide": "Masquer aux étudiants",
+  "limits": "Taille maximale par fichier : {{mb}} Mo.",
+  "move": "Déplacer vers un dossier",
+  "new_folder": "Nouveau dossier",
+  "no_folder": "Sans dossier",
+  "no_preview": "Pas d'aperçu pour ce format. Téléchargez-le pour l'ouvrir.",
+  "replace": "Remplacer le fichier",
+  "search": "Rechercher des matériels",
+  "show": "Montrer aux étudiants",
+  "teachers_only": "Professeurs uniquement",
+  "type": "Type",
+  "types": {
+    "audio": "Audios",
+    "doc": "Word",
+    "image": "Images",
+    "pdf": "PDF",
+    "ppt": "Présentations",
+    "video": "Vidéos",
+    "xls": "Excel"
+  },
+  "upload": "Téléverser des fichiers",
+  "uploaded": "{{count}} fichier(s) téléversé(s).",
+  "view": "Voir"
+}

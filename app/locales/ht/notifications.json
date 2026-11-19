@@ -1,0 +1,13 @@
+{
+  "kinds": {
+    "activity_published": "Nouvo aktivite",
+    "announcement": "Nouvo anons",
+    "assessment_published": "Nouvo evalyasyon",
+    "grade": "Nouvo nòt",
+    "lesson_published": "Nouvo sesyon disponib",
+    "message": "Nouvo mesaj",
+    "submission": "Nouvo remiz pou korije"
+  },
+  "mark_all": "Make tout kòm li",
+  "none": "Ou pa gen notifikasyon."
+}

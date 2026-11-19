@@ -1,0 +1,20 @@
+{
+  "blanks_required": "Indiquez la réponse de chaque trou.",
+  "choose_correct": "Indiquez la bonne réponse.",
+  "date": "Date invalide.",
+  "date_order": "La date de fin doit suivre la date de début.",
+  "email": "Courriel invalide.",
+  "invalid": "Valeur invalide.",
+  "items_required": "Ajoutez au moins deux éléments.",
+  "max": "Valeur trop élevée.",
+  "min": "Valeur trop basse.",
+  "number": "Doit être un nombre.",
+  "pairs_required": "Ajoutez au moins deux paires.",
+  "password_letter": "Le mot de passe doit contenir des lettres.",
+  "password_match": "Les mots de passe ne correspondent pas.",
+  "password_min": "8 caractères minimum.",
+  "password_number": "Le mot de passe doit contenir des chiffres.",
+  "prompt_required": "Rédigez l'énoncé de la question.",
+  "required": "Champ obligatoire.",
+  "too_long": "Trop long."
+}

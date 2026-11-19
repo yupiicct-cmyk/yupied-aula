@@ -1,0 +1,13 @@
+{
+  "app_name": "Nombre del aula",
+  "max_upload": "Tamaño máximo de archivo (MB)",
+  "max_upload_hint": "Sin credenciales S3 de R2, el límite real es 100 MB.",
+  "platform": "Plataforma",
+  "preferences": "Mis preferencias",
+  "theme": "Apariencia",
+  "themes": {
+    "dark": "Oscuro",
+    "light": "Claro",
+    "system": "Según el dispositivo"
+  }
+}

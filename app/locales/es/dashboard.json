@@ -1,0 +1,37 @@
+{
+  "all_done": "¡Todo al día!",
+  "chart": {
+    "attendance": "Asistencia por sesión",
+    "distribution": "Distribución de notas",
+    "grades": "Promedio por evaluación",
+    "students": "Notas"
+  },
+  "completion": "{{pct}} % de actividades completadas",
+  "continue_learning": "Continuar aprendiendo",
+  "hello": "Hola, {{name}}",
+  "kpi": {
+    "assessments": "Evaluaciones",
+    "attendance": "Asistencia promedio",
+    "courses": "Cursos activos",
+    "lessons": "Sesiones publicadas",
+    "materials": "Materiales",
+    "modules": "Módulos",
+    "pending": "Actividades por revisar",
+    "performance": "Rendimiento general",
+    "students": "Estudiantes"
+  },
+  "last_class": "Última clase",
+  "my_progress": "Progreso",
+  "next_session": "Próxima sesión",
+  "no_course": "Aún no tienes cursos",
+  "no_course_hint": "Crea tu primer curso para comenzar.",
+  "no_data": "Aún no hay datos suficientes.",
+  "no_enrollment": "Todavía no estás inscrito en un curso",
+  "no_enrollment_hint": "Tu profesor te inscribirá pronto.",
+  "nothing_pending": "No hay entregas por revisar.",
+  "pending_activities": "Actividades pendientes",
+  "pending_review": "Entregas por revisar",
+  "recent_materials": "Materiales recientes",
+  "title": "Panel del profesor",
+  "upcoming_assessments": "Próximas evaluaciones"
+}

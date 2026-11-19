@@ -1,0 +1,32 @@
+{
+  "all": "Tout fichye yo",
+  "all_types": "Tout kalite",
+  "count": "{{count}} fichye",
+  "delete_folder_confirm": "Efase dosye a? Fichye yo ap rete san dosye.",
+  "download": "Telechaje",
+  "drop_hint": "Trennen l isit oswa klike · PDF, Word, PowerPoint, Excel, imaj, MP4, MP3",
+  "empty": "Pa gen materyèl.",
+  "hide": "Kache pou elèv yo",
+  "limits": "Gwosè maksimòm pa fichye: {{mb}} MB.",
+  "move": "Deplase nan dosye",
+  "new_folder": "Nouvo dosye",
+  "no_folder": "San dosye",
+  "no_preview": "Fòma sa a pa gen apèsi. Telechaje l pou louvri l.",
+  "replace": "Ranplase fichye a",
+  "search": "Chèche materyèl",
+  "show": "Montre elèv yo",
+  "teachers_only": "Sèlman pwofesè",
+  "type": "Kalite",
+  "types": {
+    "audio": "Odyo",
+    "doc": "Word",
+    "image": "Imaj",
+    "pdf": "PDF",
+    "ppt": "Prezantasyon",
+    "video": "Videyo",
+    "xls": "Excel"
+  },
+  "upload": "Mete fichye",
+  "uploaded": "{{count}} fichye monte.",
+  "view": "Gade"
+}

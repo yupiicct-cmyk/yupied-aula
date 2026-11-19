@@ -1,0 +1,13 @@
+{
+  "app_name": "Non klas la",
+  "max_upload": "Gwosè maksimòm fichye (MB)",
+  "max_upload_hint": "San idantifyan S3 R2, limit reyèl la se 100 MB.",
+  "platform": "Platfòm",
+  "preferences": "Preferans mwen",
+  "theme": "Aparans",
+  "themes": {
+    "dark": "Fè nwa",
+    "light": "Klè",
+    "system": "Selon aparèy la"
+  }
+}

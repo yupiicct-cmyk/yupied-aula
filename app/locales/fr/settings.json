@@ -1,0 +1,13 @@
+{
+  "app_name": "Nom de la classe",
+  "max_upload": "Taille maximale de fichier (Mo)",
+  "max_upload_hint": "Sans identifiants S3 R2, la limite réelle est 100 Mo.",
+  "platform": "Plateforme",
+  "preferences": "Mes préférences",
+  "theme": "Apparence",
+  "themes": {
+    "dark": "Sombre",
+    "light": "Clair",
+    "system": "Selon l'appareil"
+  }
+}

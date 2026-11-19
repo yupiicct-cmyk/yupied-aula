@@ -1,0 +1,32 @@
+{
+  "all": "Todos los archivos",
+  "all_types": "Todos los tipos",
+  "count": "{{count}} archivos",
+  "delete_folder_confirm": "¿Eliminar la carpeta? Los archivos quedarán sin carpeta.",
+  "download": "Descargar",
+  "drop_hint": "Arrastra aquí o haz clic · PDF, Word, PowerPoint, Excel, imágenes, MP4, MP3",
+  "empty": "No hay materiales.",
+  "hide": "Ocultar a estudiantes",
+  "limits": "Tamaño máximo por archivo: {{mb}} MB.",
+  "move": "Mover a carpeta",
+  "new_folder": "Nueva carpeta",
+  "no_folder": "Sin carpeta",
+  "no_preview": "Este formato no tiene vista previa. Descárgalo para abrirlo.",
+  "replace": "Reemplazar archivo",
+  "search": "Buscar materiales",
+  "show": "Mostrar a estudiantes",
+  "teachers_only": "Solo profesores",
+  "type": "Tipo",
+  "types": {
+    "audio": "Audios",
+    "doc": "Word",
+    "image": "Imágenes",
+    "pdf": "PDF",
+    "ppt": "Presentaciones",
+    "video": "Videos",
+    "xls": "Excel"
+  },
+  "upload": "Subir archivos",
+  "uploaded": "{{count}} archivo(s) subido(s).",
+  "view": "Ver"
+}

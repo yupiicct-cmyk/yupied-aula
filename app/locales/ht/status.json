@@ -1,0 +1,22 @@
+{
+  "absent": "Absan",
+  "active": "Aktif",
+  "ai_proposed": "Pwopozisyon IA (revize)",
+  "approved": "Apwouve",
+  "archived": "Achive",
+  "completed": "Fini",
+  "draft": "Bouyon",
+  "excused": "Jistifye",
+  "graded": "Gen nòt",
+  "in_progress": "An kou",
+  "inactive": "Inaktif",
+  "late": "An reta",
+  "pending": "An atant",
+  "present": "Prezan",
+  "published": "Pibliye",
+  "ready": "Disponib",
+  "returned": "Retounen",
+  "scheduled": "Pwograme",
+  "submitted": "Remèt",
+  "viewed": "Konsilte"
+}

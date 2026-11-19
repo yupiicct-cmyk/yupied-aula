@@ -1,0 +1,12 @@
+{
+  "cover": "Image de couverture",
+  "create": "Créer un cours",
+  "end_date": "Date de fin",
+  "enrolled": "Inscrits ({{count}})",
+  "languages": "Langues disponibles",
+  "name": "Nom du cours",
+  "responsible": "Professeur responsable",
+  "settings": "Informations du cours",
+  "start_date": "Date de début",
+  "upload_cover": "Téléverser une couverture (PNG/JPG)"
+}

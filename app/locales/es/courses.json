@@ -1,0 +1,12 @@
+{
+  "cover": "Imagen de portada",
+  "create": "Crear curso",
+  "end_date": "Fecha de término",
+  "enrolled": "Inscritos ({{count}})",
+  "languages": "Idiomas disponibles",
+  "name": "Nombre del curso",
+  "responsible": "Profesor responsable",
+  "settings": "Datos del curso",
+  "start_date": "Fecha de inicio",
+  "upload_cover": "Subir portada (PNG/JPG)"
+}

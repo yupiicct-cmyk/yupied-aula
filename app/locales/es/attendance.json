@@ -1,0 +1,12 @@
+{
+  "create_first": "Crea una sesión de asistencia.",
+  "new_session": "Nueva toma de asistencia",
+  "none": "Sin registros de asistencia.",
+  "note": "Nota",
+  "percentage": "Porcentaje de asistencia",
+  "session_created": "Sesión creada. Marca la asistencia.",
+  "sessions": "Sesiones registradas",
+  "summary": "P {{present}} · A {{late}} · Au {{absent}} · J {{excused}}",
+  "title": "Asistencia",
+  "total_sessions": "Total de sesiones"
+}

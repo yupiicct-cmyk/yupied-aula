@@ -1,0 +1,53 @@
+import { type RouteConfig, index, layout, prefix, route } from "@react-router/dev/routes";
+
+export default [
+  index("routes/index.tsx"),
+  route("login", "routes/auth/login.tsx"),
+  route("forgot-password", "routes/auth/forgot-password.tsx"),
+  route("reset-password", "routes/auth/reset-password.tsx"),
+  route("auth/confirm", "routes/auth/confirm.tsx"),
+  route("auth/callback", "routes/auth/callback.tsx"),
+  route("logout", "routes/auth/logout.tsx"),
+
+  // Endpoints (acciones/recursos sin UI)
+  route("api/preferences", "routes/api/preferences.ts"),
+  route("api/uploads", "routes/api/uploads.ts"),
+  route("api/uploads/proxy/:id", "routes/api/upload-proxy.ts"),
+  route("api/translate", "routes/api/translate.ts"),
+  route("files/:kind/:id", "routes/api/files.ts"),
+
+  layout("layouts/app-layout.tsx", [
+    ...prefix("app", [
+      index("routes/app/dashboard.tsx"),
+      route("students", "routes/app/students/list.tsx"),
+      route("students/import", "routes/app/students/import.tsx"),
+      route("students/:id", "routes/app/students/detail.tsx"),
+      route("courses", "routes/app/courses/list.tsx"),
+      route("courses/:id", "routes/app/courses/detail.tsx"),
+      route("modules", "routes/app/modules.tsx"),
+      route("lessons", "routes/app/lessons/list.tsx"),
+      route("lessons/:id", "routes/app/lessons/view.tsx"),
+      route("lessons/:id/edit", "routes/app/lessons/edit.tsx"),
+      route("library", "routes/app/library.tsx"),
+      route("activities", "routes/app/activities/list.tsx"),
+      route("activities/:id", "routes/app/activities/view.tsx"),
+      route("activities/:id/edit", "routes/app/activities/edit.tsx"),
+      route("activities/:id/submissions", "routes/app/activities/submissions.tsx"),
+      route("assessments", "routes/app/assessments/list.tsx"),
+      route("assessments/:id", "routes/app/assessments/view.tsx"),
+      route("assessments/:id/edit", "routes/app/assessments/edit.tsx"),
+      route("assessments/:id/results", "routes/app/assessments/results.tsx"),
+      route("grades", "routes/app/grades.tsx"),
+      route("attendance", "routes/app/attendance.tsx"),
+      route("announcements", "routes/app/announcements.tsx"),
+      route("messages", "routes/app/messages/list.tsx"),
+      route("messages/:id", "routes/app/messages/thread.tsx"),
+      route("notifications", "routes/app/notifications.tsx"),
+      route("calendar", "routes/app/calendar.tsx"),
+      route("progress", "routes/app/progress.tsx"),
+      route("reports", "routes/app/reports.tsx"),
+      route("profile", "routes/app/profile.tsx"),
+      route("settings", "routes/app/settings.tsx"),
+    ]),
+  ]),
+] satisfies RouteConfig;
