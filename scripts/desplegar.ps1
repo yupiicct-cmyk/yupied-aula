@@ -1,4 +1,4 @@
-# Despliegue de Yupiii en Cloudflare Workers (Windows / PowerShell).
+﻿# Despliegue de Yupiii en Cloudflare Workers (Windows / PowerShell).
 # Ejecutar con doble clic en DESPLEGAR.bat
 $ErrorActionPreference = "Stop"
 Set-Location (Split-Path $PSScriptRoot -Parent)
@@ -17,8 +17,8 @@ if ($LASTEXITCODE -ne 0) { Falla "npm install falló" }
 
 Paso 3 "Iniciando sesión en Cloudflare"
 Write-Host "Se abrirá el navegador: pulsa 'Allow' para autorizar Wrangler."
-npx wrangler whoami 2>$null | Select-String "You are logged in" | Out-Null
-if (-not $?) { npx wrangler login; if ($LASTEXITCODE -ne 0) { Falla "No se pudo iniciar sesión en Cloudflare" } }
+$who = (npx wrangler whoami 2>&1) -join "`n"
+if ($who -notmatch "logged in") { npx wrangler login; if ($LASTEXITCODE -ne 0) { Falla "No se pudo iniciar sesión en Cloudflare" } }
 npx wrangler whoami
 
 Paso 4 "Almacenamiento de archivos (R2)"
