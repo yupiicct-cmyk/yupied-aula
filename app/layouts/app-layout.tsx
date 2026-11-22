@@ -4,12 +4,14 @@ import { useTranslation } from "react-i18next";
 import {
   Bell, BookOpen, CalendarDays, ClipboardCheck, ClipboardList, FileBarChart, FolderOpen, GraduationCap, Home,
   Layers, LogOut, Megaphone, Menu, MessageSquare, Moon, NotebookPen, Settings, Sun, TrendingUp, UserRound, Users, X, Award,
+  Building2, Globe2, Eye, HeartHandshake,
 } from "lucide-react";
 import type { Route } from "./+types/app-layout";
 import { requireUser, getSupabase } from "~/services/auth.server";
 import { getCourses } from "~/services/courses.server";
 import { getEnv } from "~/services/env.server";
 import { getAppName } from "~/services/settings.server";
+import { getInstitutionContext, managesRoles, supervisesRoles } from "~/services/institutions.server";
 import { LanguageSwitcher } from "~/components/layout/language-switcher";
 import { Avatar } from "~/components/ui";
 import { cn } from "~/utils/cn";
@@ -17,13 +19,23 @@ import { fullName, initials } from "~/utils/format";
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { user, supabase } = await requireUser(request, context);
-  const [{ courses, course }, unread] = await Promise.all([
+  const [{ courses, course }, unread, inst] = await Promise.all([
     getCourses(request, supabase),
     supabase.from("notifications").select("id", { count: "exact", head: true }).is("read_at", null),
+    getInstitutionContext(request, supabase),
   ]);
+  const roles = inst.active?.roles ?? [];
   return {
     appName: await getAppName(getSupabase(context), getEnv(context).APP_NAME),
-    user: { id: user.id, name: fullName(user.profile), initials: initials(user.profile), email: user.email, isTeacher: user.isTeacher, isAdmin: user.isAdmin, isStudent: user.isStudent },
+    user: {
+      id: user.id, name: fullName(user.profile), initials: initials(user.profile), email: user.email,
+      isTeacher: user.isTeacher, isAdmin: user.isAdmin, isStudent: user.isStudent, isGuardian: user.isGuardian,
+      canAdmin: user.isAdmin || inst.list.some((i) => managesRoles(i.roles)),
+      canSupervise: supervisesRoles(roles),
+    },
+    institutions: inst.list.map((i) => ({ id: i.institution_id, name: i.short_name || i.name, country: i.country_code })),
+    activeInstitutionId: inst.active?.institution_id ?? null,
+    productName: inst.country?.productName ?? "YupiEd",
     courses: courses.map((c) => ({ id: c.id, name: c.name })),
     activeCourseId: course?.id ?? null,
     unread: unread.count ?? 0,
@@ -67,13 +79,32 @@ const studentNav: NavItem[] = [
   { to: "/app/profile", key: "nav.my_profile", icon: UserRound },
 ];
 
+const supervisorNav: NavItem[] = [
+  { to: "/app/supervision", key: "nav.supervision", icon: Eye, end: true },
+  { to: "/app/messages", key: "nav.messages", icon: MessageSquare },
+  { to: "/app/notifications", key: "nav.notifications", icon: Bell },
+  { to: "/app/profile", key: "nav.my_profile", icon: UserRound },
+];
+
+const guardianNav: NavItem[] = [
+  { to: "/app/guardian", key: "nav.guardian", icon: HeartHandshake, end: true },
+  { to: "/app/notifications", key: "nav.notifications", icon: Bell },
+  { to: "/app/profile", key: "nav.my_profile", icon: UserRound },
+];
+
 export default function AppLayout({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation();
-  const { user, courses, activeCourseId, unread, appName } = loaderData;
+  const { user, courses, activeCourseId, unread, productName, institutions, activeInstitutionId } = loaderData;
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const navigation = useNavigation();
-  const nav = user.isTeacher ? teacherNav : studentNav;
+  const base = user.isTeacher ? teacherNav : user.isStudent ? studentNav : user.isGuardian ? guardianNav : supervisorNav;
+  const nav = [
+    ...base,
+    ...(user.canSupervise && base !== supervisorNav ? [{ to: "/app/supervision", key: "nav.supervision", icon: Eye }] : []),
+    ...(user.isGuardian && base !== guardianNav ? [{ to: "/app/guardian", key: "nav.guardian", icon: HeartHandshake }] : []),
+    ...(user.canAdmin ? [{ to: "/app/admin", key: "nav.admin", icon: Building2 }] : []),
+  ];
   useEffect(() => setOpen(false), [location.pathname]);
 
   return (
@@ -83,7 +114,7 @@ export default function AppLayout({ loaderData }: Route.ComponentProps) {
         open ? "translate-x-0" : "-translate-x-full")} aria-label={t("nav.menu")}>
         <div className="flex h-16 items-center gap-2 border-b border-white/10 px-5">
           <GraduationCap className="h-7 w-7 text-brand-500" aria-hidden />
-          <span className="truncate font-semibold text-white">{appName}</span>
+          <span className="truncate font-semibold text-white">{productName}</span>
           <button className="ml-auto lg:hidden" onClick={() => setOpen(false)} aria-label={t("common.close")}><X className="h-5 w-5" /></button>
         </div>
         <nav className="flex-1 space-y-0.5 overflow-y-auto p-3">
@@ -97,11 +128,15 @@ export default function AppLayout({ loaderData }: Route.ComponentProps) {
           ))}
         </nav>
         <div className="border-t border-white/10 p-3">
+          <a href="/cambiar-pais" className="mb-1 flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-300 hover:bg-white/10 hover:text-white">
+            <Globe2 className="h-4 w-4" aria-hidden /> {t("countries.change")}
+          </a>
           <Form method="post" action="/logout">
             <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-300 hover:bg-white/10 hover:text-white">
               <LogOut className="h-4 w-4" aria-hidden /> {t("auth.sign_out")}
             </button>
           </Form>
+          <p className="px-3 pt-2 text-[11px] text-slate-500">{t("countries.company")}</p>
         </div>
       </aside>
       {open && <div className="fixed inset-0 z-30 bg-black/40 lg:hidden" onClick={() => setOpen(false)} aria-hidden />}
@@ -109,6 +144,17 @@ export default function AppLayout({ loaderData }: Route.ComponentProps) {
       {/* Barra superior */}
       <header className="no-print sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-slate-200 bg-white/90 px-4 backdrop-blur dark:border-white/10 dark:bg-navy-950/90 sm:px-6">
         <button className="lg:hidden" onClick={() => setOpen(true)} aria-label={t("nav.menu")}><Menu className="h-6 w-6" /></button>
+        {institutions.length > 1 && (
+          <Form method="post" action="/api/preferences" className="min-w-0">
+            <input type="hidden" name="intent" value="institution" />
+            <label className="sr-only" htmlFor="inst-switch">{t("countries.institution")}</label>
+            <select id="inst-switch" name="institution" defaultValue={activeInstitutionId ?? ""} key={activeInstitutionId}
+              onChange={(e) => e.currentTarget.form?.requestSubmit()}
+              className="max-w-[40vw] truncate rounded-lg border border-slate-200 bg-white py-1.5 pl-3 pr-8 text-sm dark:border-white/15 dark:bg-navy-900 sm:max-w-xs">
+              {institutions.map((i) => <option key={i.id} value={i.id}>{i.country} · {i.name}</option>)}
+            </select>
+          </Form>
+        )}
         {courses.length > 0 && (
           <Form method="post" action="/api/preferences" className="min-w-0">
             <input type="hidden" name="intent" value="course" />

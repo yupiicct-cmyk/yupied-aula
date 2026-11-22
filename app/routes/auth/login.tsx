@@ -11,13 +11,25 @@ import { getEnv } from "~/services/env.server";
 import { getAppName } from "~/services/settings.server";
 import { clientIp, rateLimit } from "~/services/cloudflare/ratelimit.server";
 import { REMEMBER_COOKIE } from "~/services/supabase/server";
+import { countryBySlug, countryCookie, preferredCountry } from "~/countries/registry";
 import { AppError } from "~/utils/errors";
 
-export const meta: Route.MetaFunction = () => [{ title: "Login · Yupiii" }];
+export const meta: Route.MetaFunction = ({ loaderData }) => [{ title: `Login · ${loaderData?.productName ?? "YupiEd"}` }];
 
-export async function loader({ context }: Route.LoaderArgs) {
+/** /chile/login o /haiti/login → país explícito; /login → preferencia guardada. */
+function countryFromRequest(request: Request) {
+  const slug = new URL(request.url).pathname.split("/").filter(Boolean)[0];
+  return { country: countryBySlug(slug) ?? preferredCountry(request), explicit: !!countryBySlug(slug) };
+}
+
+export async function loader({ request, context }: Route.LoaderArgs) {
+  const { country, explicit } = countryFromRequest(request);
   if (await getOptionalUser(context)) throw redirect("/app");
-  return { appName: await getAppName(getSupabase(context), getEnv(context).APP_NAME), googleEnabled: true };
+  const appName = await getAppName(getSupabase(context), getEnv(context).APP_NAME);
+  return data(
+    { appName, productName: country?.productName ?? appName, country: country ? { slug: country.slug, code: country.code, name: country.name } : null, googleEnabled: true },
+    explicit && country ? { headers: { "Set-Cookie": countryCookie(country.slug) } } : undefined,
+  );
 }
 
 const schema = z.object({ email: z.string().trim().toLowerCase().email(), password: z.string().min(1).max(200), remember: z.string().optional(), next: z.string().optional() });
@@ -72,7 +84,7 @@ export default function Login({ loaderData }: Route.ComponentProps) {
   const error = actionData?.error ?? params.get("error");
 
   return (
-    <AuthShell appName={loaderData.appName} title={loaderData.appName} subtitle={t("auth.welcome")}>
+    <AuthShell appName={loaderData.appName} title={loaderData.productName} subtitle={t("auth.welcome")} country={loaderData.country}>
       <Form method="post" className="space-y-4" replace>
         <input type="hidden" name="next" value={params.get("next") ?? ""} />
         {error && <Alert>{t(`errors.${error}`, { defaultValue: t("errors.unexpected") })}</Alert>}

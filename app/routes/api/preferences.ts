@@ -3,6 +3,8 @@ import type { Route } from "./+types/preferences";
 import { getOptionalUser, getSupabase } from "~/services/auth.server";
 import { COURSE_COOKIE } from "~/services/courses.server";
 import { isLocale, LANG_COOKIE } from "~/services/i18n";
+import { getMyInstitutions, INSTITUTION_COOKIE } from "~/services/institutions.server";
+import { countryByCode, countryCookie } from "~/countries/registry";
 
 const YEAR = 60 * 60 * 24 * 365;
 
@@ -32,6 +34,17 @@ export async function action({ request, context }: Route.ActionArgs) {
     headers.append("Set-Cookie", `${COURSE_COOKIE}=${id}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${YEAR}`);
     const back = String(fd.get("back") ?? "/app");
     throw redirect(back.startsWith("/") && !back.startsWith("//") ? back : "/app", { headers });
+  } else if (intent === "institution") {
+    // Solo se acepta una institución a la que el usuario pertenece según la BD.
+    if (!user) return data({ ok: false }, { status: 401 });
+    const id = String(fd.get("institution") ?? "");
+    const inst = (await getMyInstitutions(supabase)).find((i) => i.institution_id === id);
+    if (!inst) return data({ ok: false }, { status: 403 });
+    headers.append("Set-Cookie", `${INSTITUTION_COOKIE}=${id}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${YEAR}`);
+    headers.append("Set-Cookie", `${COURSE_COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`);
+    const c = countryByCode(inst.country_code);
+    if (c) headers.append("Set-Cookie", countryCookie(c.slug));
+    throw redirect("/app", { headers });
   } else {
     return data({ ok: false }, { status: 400 });
   }

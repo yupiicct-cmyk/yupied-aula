@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from "react-router";
+import { Link, redirect, useSearchParams } from "react-router";
 import { useTranslation } from "react-i18next";
 import { Award, BookOpen, CalendarClock, ClipboardCheck, ClipboardList, FolderOpen, GraduationCap, Layers, NotebookPen, PlayCircle, TrendingUp, Users } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
@@ -21,6 +21,8 @@ type Stats = {
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { user, supabase } = await requireUser(request, context);
+  // Apoderados y supervisores (dirección/inspectoría/administración) tienen su propio inicio.
+  if (!user.isTeacher && !user.isStudent) throw redirect(user.isGuardian ? "/app/guardian" : user.isSupervisor ? "/app/supervision" : "/app/profile");
   const locale = detectLocale(request, user.profile.locale);
   const { courses, course } = await getCourses(request, supabase);
   const now = new Date().toISOString();

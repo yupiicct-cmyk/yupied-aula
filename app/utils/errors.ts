@@ -14,12 +14,19 @@ const PG_CODES: Record<string, string> = {
   "28000": "not_authenticated",
 };
 
+const DOMAIN_ERRORS = new Set([
+  "invalid_rut", "invalid_level", "cross_institution", "institution_required", "student_not_in_institution",
+  "institution_country_locked", "course_institution_locked",
+]);
+
 /** Traduce errores de PostgREST/Postgres a códigos de la app sin filtrar detalles internos. */
 export function toAppError(err: unknown): AppError {
   if (err instanceof AppError) return err;
   if (err && typeof err === "object" && "code" in err) {
     const e = err as { code?: string; message?: string };
     if (e.code === "P0001" && e.message) return new AppError(e.message, 409);
+    // Reglas multiinstitución (migración 7): mensajes propios traducibles
+    if (e.message && DOMAIN_ERRORS.has(e.message)) return new AppError(e.message, e.code === "42501" ? 403 : 400);
     if (e.code && PG_CODES[e.code]) return new AppError(PG_CODES[e.code]!, e.code === "42501" ? 403 : 400);
     if (e.code === "PGRST116") return new AppError("not_found", 404);
   }

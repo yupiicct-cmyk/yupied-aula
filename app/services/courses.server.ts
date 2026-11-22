@@ -2,17 +2,24 @@ import type { DB } from "~/services/supabase/server";
 import type { SessionInfo } from "~/services/auth.server";
 import type { Tables } from "~/types/database";
 import { AppError } from "~/utils/errors";
+import { INSTITUTION_COOKIE } from "~/services/institutions.server";
 
 export const COURSE_COOKIE = "aula_course";
-export type CourseLite = Pick<Tables<"courses">, "id" | "name" | "status" | "languages" | "grade_scale_id" | "owner_teacher_id" | "start_date" | "end_date">;
+export type CourseLite = Pick<Tables<"courses">, "id" | "name" | "status" | "languages" | "grade_scale_id" | "owner_teacher_id" | "start_date" | "end_date" | "institution_id" | "level_key" | "grade_key">;
 
-/** Cursos visibles (RLS) y el curso activo elegido en la cookie. */
+/**
+ * Cursos visibles (RLS) de la institución activa y el curso activo elegido en la cookie.
+ * La cookie de institución solo acota lo que RLS ya permite ver; no concede acceso.
+ */
 export async function getCourses(request: Request, supabase: DB) {
   const { data, error } = await supabase.from("courses")
-    .select("id,name,status,languages,grade_scale_id,owner_teacher_id,start_date,end_date")
+    .select("id,name,status,languages,grade_scale_id,owner_teacher_id,start_date,end_date,institution_id,level_key,grade_key")
     .is("deleted_at", null).neq("status", "archived").order("created_at");
   if (error) throw error;
-  const courses = (data ?? []) as CourseLite[];
+  const all = (data ?? []) as CourseLite[];
+  const instId = (request.headers.get("Cookie") ?? "").match(new RegExp(`${INSTITUTION_COOKIE}=([0-9a-f-]{36})`))?.[1];
+  const scoped = instId ? all.filter((c) => c.institution_id === instId) : all;
+  const courses = scoped.length > 0 ? scoped : all;
   const cookieId = (request.headers.get("Cookie") ?? "").match(new RegExp(`${COURSE_COOKIE}=([0-9a-f-]{36})`))?.[1];
   const url = new URL(request.url);
   const qId = url.searchParams.get("course");

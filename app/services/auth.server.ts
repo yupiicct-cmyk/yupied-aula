@@ -6,7 +6,8 @@ import { sessionContext } from "~/services/context";
 import { getEnv } from "~/services/env.server";
 import { AppError } from "~/utils/errors";
 
-export type Role = "superadmin" | "teacher" | "student" | "academic_admin" | "assistant" | "tutor" | "coordinator";
+export type Role = "superadmin" | "teacher" | "student" | "academic_admin" | "assistant" | "tutor" | "coordinator"
+  | "country_admin" | "institution_admin" | "director" | "inspector" | "guardian";
 
 export interface SessionInfo {
   id: string;
@@ -16,6 +17,9 @@ export interface SessionInfo {
   isAdmin: boolean;
   isTeacher: boolean;
   isStudent: boolean;
+  /** Dirección, inspectoría o administración (país/institución): lectura de supervisión. */
+  isSupervisor: boolean;
+  isGuardian: boolean;
 }
 
 type Ctx = Readonly<RouterContextProvider>;
@@ -41,6 +45,8 @@ async function loadSession(supabase: DB): Promise<SessionInfo | null> {
     isAdmin,
     isTeacher: isAdmin || roles.includes("teacher") || roles.includes("academic_admin"),
     isStudent: roles.includes("student"),
+    isSupervisor: isAdmin || roles.some((r) => ["country_admin", "institution_admin", "director", "inspector", "academic_admin"].includes(r)),
+    isGuardian: roles.includes("guardian"),
   };
 }
 
@@ -80,7 +86,7 @@ export async function getOptionalUser(context: Ctx) {
  * Los permisos reales los aplica PostgreSQL (RLS); esto evita mostrar
  * pantallas que el usuario no puede usar.
  */
-export async function requireUser(request: Request, context: Ctx, opts: { teacher?: boolean; student?: boolean; admin?: boolean } = {}) {
+export async function requireUser(request: Request, context: Ctx, opts: { teacher?: boolean; student?: boolean; admin?: boolean; supervisor?: boolean; guardian?: boolean } = {}) {
   const s = context.get(sessionContext);
   const user = await s.load();
   const url = new URL(request.url);
@@ -98,6 +104,8 @@ export async function requireUser(request: Request, context: Ctx, opts: { teache
   if (opts.admin && !user.isAdmin) throw new AppError("forbidden", 403);
   if (opts.teacher && !user.isTeacher) throw new AppError("forbidden", 403);
   if (opts.student && !user.isStudent) throw new AppError("forbidden", 403);
+  if (opts.supervisor && !user.isSupervisor) throw new AppError("forbidden", 403);
+  if (opts.guardian && !user.isGuardian) throw new AppError("forbidden", 403);
   return { user, supabase: s.supabase };
 }
 

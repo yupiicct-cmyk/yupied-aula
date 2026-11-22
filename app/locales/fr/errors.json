@@ -54,5 +54,12 @@
   "translation_unavailable": "La traduction assistée n'est pas activée sur ce serveur.",
   "unexpected": "Une erreur inattendue s'est produite. Réessayez.",
   "upload_failed": "Le téléversement a échoué. Vérifiez votre connexion.",
-  "upload_missing": "Le fichier n'est pas arrivé dans le stockage."
+  "upload_missing": "Le fichier n'est pas arrivé dans le stockage.",
+  "invalid_rut": "Le RUT n'est pas valide (vérifiez le chiffre de contrôle).",
+  "invalid_level": "Ce niveau n'est pas activé pour l'établissement.",
+  "cross_institution": "Cette personne appartient à un autre établissement.",
+  "institution_required": "Vous devez appartenir à un établissement pour créer des classes.",
+  "student_not_in_institution": "L'élève n'appartient pas à cet établissement.",
+  "institution_country_locked": "Le pays d'un établissement ne peut pas être modifié.",
+  "course_institution_locked": "Une classe ne peut pas changer d'établissement."
 }

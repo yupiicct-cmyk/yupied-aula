@@ -34,12 +34,16 @@ export function makeI18n(lng: Locale): i18n {
   return inst;
 }
 
-/** Idioma: perfil del usuario > cookie > navegador > español. */
-export function detectLocale(request: Request, profileLocale?: string | null): Locale {
+/**
+ * Idioma (independiente del país): perfil del usuario > cookie de idioma >
+ * idioma por defecto del país elegido > navegador > español.
+ */
+export function detectLocale(request: Request, profileLocale?: string | null, countryDefault?: Locale | null): Locale {
   if (isLocale(profileLocale)) return profileLocale;
   const cookie = request.headers.get("Cookie") ?? "";
   const c = cookie.match(new RegExp(`${LANG_COOKIE}=(\\w+)`))?.[1];
   if (isLocale(c)) return c;
+  if (countryDefault) return countryDefault;
   const accept = request.headers.get("Accept-Language") ?? "";
   for (const part of accept.split(",")) {
     const code = part.trim().slice(0, 2).toLowerCase();

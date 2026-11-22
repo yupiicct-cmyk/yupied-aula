@@ -173,6 +173,9 @@ do $$ begin
   assert (select student_id from public.grades) = 'b1000000-0000-0000-0000-0000000000a4', 'pupilo correcto';
   assert (select count(*) from public.profiles where id = 'b1000000-0000-0000-0000-0000000000a5') = 0, 'no ve a otro estudiante';
   assert (select count(*) from public.courses) = 0, 'apoderado no ve contenidos de cursos';
+  assert (select count(*) from public.guardian_overview()) = 1, 'resumen: un pupilo, un curso';
+  assert (select grade_avg from public.guardian_overview()) = 4.0, 'resumen: promedio';
+  assert (select course_name from public.guardian_overview()) = '3° Básico A', 'resumen: nombre del curso';
 end $$;
 
 -- ---------- Estudiante de B ----------
@@ -180,6 +183,7 @@ set local request.jwt.claims = '{"sub":"b1000000-0000-0000-0000-0000000000b4","r
 do $$ begin
   assert (select count(*) from public.grades) = 1, 'estudiante B ve solo su nota';
   assert (select count(*) from public.institution_members) = 1, 'solo su membresía';
+  assert (select count(*) from public.guardian_overview()) = 0, 'estudiante sin pupilos';
 end $$;
 
 -- ---------- Admin de país Chile ----------

@@ -28,5 +28,8 @@
   "reports": "Rapports",
   "settings": "Paramètres",
   "students": "Étudiants",
-  "summary": "Résumé"
+  "summary": "Résumé",
+  "supervision": "Supervision",
+  "guardian": "Mes enfants",
+  "admin": "Administration"
 }

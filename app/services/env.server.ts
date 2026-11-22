@@ -19,6 +19,8 @@ export interface AppEnv extends AppSecrets {
   R2_BUCKET_NAME: string;
   R2_ACCOUNT_ID: string;
   MAX_UPLOAD_MB: string;
+  /** URL del portal internacional (selector de país). */
+  PORTAL_URL?: string;
 }
 
 export function getEnv(context: Readonly<RouterContextProvider>): AppEnv {

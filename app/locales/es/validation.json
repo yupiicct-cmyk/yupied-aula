@@ -16,5 +16,6 @@
   "password_number": "La contraseña debe incluir números.",
   "prompt_required": "Escribe el enunciado de la pregunta.",
   "required": "Campo obligatorio.",
-  "too_long": "Demasiado largo."
+  "too_long": "Demasiado largo.",
+  "invalid_rut": "RUT inválido."
 }

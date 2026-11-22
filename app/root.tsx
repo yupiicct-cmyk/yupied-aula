@@ -8,6 +8,7 @@ import { getOptionalUser, getSupabase, sessionMiddleware } from "~/services/auth
 import { getAppName } from "~/services/settings.server";
 import { getEnv } from "~/services/env.server";
 import { AppError } from "~/utils/errors";
+import { countryBySlug, preferredCountry } from "~/countries/registry";
 import { ButtonLink } from "~/components/ui";
 
 export const middleware: Route.MiddlewareFunction[] = [sessionMiddleware()];
@@ -19,7 +20,9 @@ export const links: Route.LinksFunction = () => [
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const user = await getOptionalUser(context);
-  const locale = detectLocale(request, user?.profile.locale);
+  const slug = new URL(request.url).pathname.split("/").filter(Boolean)[0];
+  const country = countryBySlug(slug) ?? preferredCountry(request);
+  const locale = detectLocale(request, user?.profile.locale, country?.localization.defaultLocale);
   const theme = (request.headers.get("Cookie") ?? "").match(/aula_theme=(light|dark|system)/)?.[1] ?? "system";
   return data({ locale, theme, appName: await getAppName(getSupabase(context), getEnv(context).APP_NAME) });
 }

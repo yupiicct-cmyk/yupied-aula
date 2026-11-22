@@ -7,22 +7,32 @@ import type { Route } from "./+types/list";
 import { requireUser } from "~/services/auth.server";
 import { COURSE_COOKIE } from "~/services/courses.server";
 import { fail, parseForm } from "~/services/forms.server";
-import { Button, Card, EmptyState, Field, Input, PageHeader, Textarea } from "~/components/ui";
+import { Button, Card, EmptyState, Field, Input, PageHeader, Select, Textarea } from "~/components/ui";
 import { StatusBadge } from "~/components/status-badge";
 import { optionalDate } from "~/schemas/common";
 import { fmtDate } from "~/utils/format";
 import { useLocale } from "~/hooks/use-locale";
 import { must } from "~/utils/errors";
+import { getInstitutionContext } from "~/services/institutions.server";
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { user, supabase } = await requireUser(request, context);
-  const { data } = await supabase.from("courses").select("id,name,description,status,start_date,end_date,cover_key,languages").is("deleted_at", null).order("created_at");
+  const { data } = await supabase.from("courses").select("id,name,description,status,start_date,end_date,cover_key,languages,institution_id").is("deleted_at", null).order("created_at");
   const ids = (data ?? []).map((c) => c.id);
   const { data: members } = user.isTeacher && ids.length
     ? await supabase.from("course_members").select("course_id").in("course_id", ids).eq("status", "active") : { data: [] };
   const counts = new Map<string, number>();
   for (const m of members ?? []) counts.set(m.course_id, (counts.get(m.course_id) ?? 0) + 1);
-  return { isTeacher: user.isTeacher, courses: (data ?? []).map((c) => ({ ...c, students: counts.get(c.id) ?? 0 })) };
+  const { active, country } = await getInstitutionContext(request, supabase);
+  const levels = country && active ? country.academic.levels : [];
+  const { data: inst } = active ? await supabase.from("institutions").select("levels").eq("id", active.institution_id).maybeSingle() : { data: null };
+  return {
+    isTeacher: user.isTeacher,
+    institution: active ? { id: active.institution_id, name: active.name } : null,
+    levels: levels.filter((l) => (inst?.levels ?? []).includes(l.key)).map((l) => ({ key: l.key, name: l.name })),
+    courses: (data ?? []).filter((c) => !active || !("institution_id" in c) || c.institution_id === active.institution_id)
+      .map((c) => ({ ...c, students: counts.get(c.id) ?? 0 })),
+  };
 }
 
 const schema = z.object({
@@ -30,13 +40,22 @@ const schema = z.object({
   description: z.string().trim().max(5000).optional().default(""),
   start_date: optionalDate,
   end_date: optionalDate,
+  level_key: z.string().max(40).optional().default(""),
 });
 
 export async function action({ request, context }: Route.ActionArgs) {
   const { user, supabase } = await requireUser(request, context, { teacher: true });
   const p = parseForm(await request.formData(), schema);
   if (!p.success) return fail(p.fieldErrors);
-  const course = must(await supabase.from("courses").insert({ ...p.data, owner_teacher_id: user.id, status: "active" }).select("id").single());
+  // Institución activa validada contra la BD; RLS vuelve a exigir que el docente pertenezca a ella.
+  const { active } = await getInstitutionContext(request, supabase);
+  const { level_key, ...rest } = p.data;
+  const course = must(await supabase.from("courses").insert({
+    ...rest, owner_teacher_id: user.id, status: "active",
+    // Sin institución activa, el trigger courses_institution la deduce (o rechaza).
+    institution_id: (active?.institution_id ?? null) as string,
+    level_key: level_key || null,
+  }).select("id").single());
   throw redirect(`/app/courses/${course.id}`, { headers: { "Set-Cookie": `${COURSE_COOKIE}=${course.id}; Path=/; HttpOnly; SameSite=Lax; Max-Age=31536000` } });
 }
 
@@ -56,6 +75,12 @@ export default function Courses({ loaderData }: Route.ComponentProps) {
           <Form method="post" className="grid gap-4 sm:grid-cols-2">
             <Field label={t("courses.name")} htmlFor="name" error={fe.name && t(fe.name)} className="sm:col-span-2"><Input id="name" name="name" required /></Field>
             <Field label={t("common.description")} htmlFor="description" className="sm:col-span-2"><Textarea id="description" name="description" /></Field>
+            {loaderData.levels.length > 0 && (
+              <Field label={t("admin.level")} htmlFor="lv">
+                <Select id="lv" name="level_key" defaultValue=""><option value="">—</option>{loaderData.levels.map((l) => <option key={l.key} value={l.key}>{l.name[locale]}</option>)}</Select>
+              </Field>
+            )}
+            {loaderData.institution && <p className="self-end pb-2 text-sm text-slate-500 sm:col-span-1">{t("countries.institution")}: {loaderData.institution.name}</p>}
             <Field label={t("courses.start_date")} htmlFor="sd"><Input id="sd" name="start_date" type="date" /></Field>
             <Field label={t("courses.end_date")} htmlFor="ed"><Input id="ed" name="end_date" type="date" /></Field>
             <div><Button type="submit" loading={nav.state === "submitting"}>{t("common.create")}</Button></div>

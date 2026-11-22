@@ -7,12 +7,13 @@
   "upload_source_maps": true,
   // Variables públicas (no secretas). Los secretos van con `wrangler secret put` o .dev.vars
   "vars": {
-    "APP_NAME": "Yupiii",
+    "APP_NAME": "YupiEd",
     "SUPABASE_URL": "http://127.0.0.1:54321",
     "SUPABASE_PUBLISHABLE_KEY": "",
     "R2_BUCKET_NAME": "yupiii-files-dev",
     "R2_ACCOUNT_ID": "",
-    "MAX_UPLOAD_MB": "200"
+    "MAX_UPLOAD_MB": "200",
+    "PORTAL_URL": "http://localhost:8788"
   },
   "r2_buckets": [{ "binding": "FILES", "bucket_name": "yupiii-files-dev" }],
   "ratelimits": [
@@ -23,12 +24,14 @@
     "production": {
       "name": "yupiii",
       "vars": {
-        "APP_NAME": "Yupiii",
+        "APP_NAME": "YupiEd",
         "SUPABASE_URL": "https://ifbmxalfqiyqlqdpenbo.supabase.co",
         "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_PBDo9bLzBrQjQIFhvZQZ4g_ZSOSaW2R",
         "R2_BUCKET_NAME": "yupiii-files-prod",
         "R2_ACCOUNT_ID": "",
-        "MAX_UPLOAD_MB": "200"
+        "MAX_UPLOAD_MB": "200",
+        // Portal estático (Cloudflare Pages, proyecto yupied-portal)
+        "PORTAL_URL": "https://yupied.yupicct.com"
       },
       "r2_buckets": [{ "binding": "FILES", "bucket_name": "yupiii-files-prod" }],
       "ratelimits": [

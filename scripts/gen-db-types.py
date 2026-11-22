@@ -16,7 +16,7 @@ enums = {r["n"]: r["v"] for r in q("""select json_build_object('n',t.typname,'v'
 
 def ts(udt, dtype, nullable):
     base = udt.lstrip("_")
-    m = {"uuid":"string","text":"string","citext":"string","varchar":"string","date":"string","timestamptz":"string","timestamp":"string",
+    m = {"uuid":"string","text":"string","citext":"string","varchar":"string","bpchar":"string","date":"string","timestamptz":"string","timestamp":"string",
          "int2":"number","int4":"number","int8":"number","numeric":"number","float8":"number","float4":"number","bool":"boolean",
          "jsonb":"Json","json":"Json"}
     t = m.get(base) or (f'Database["public"]["Enums"]["{base}"]' if base in enums else "unknown")

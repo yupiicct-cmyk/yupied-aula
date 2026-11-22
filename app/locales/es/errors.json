@@ -54,5 +54,12 @@
   "translation_unavailable": "La traducción asistida no está activada en este servidor.",
   "unexpected": "Ocurrió un error inesperado. Intenta nuevamente.",
   "upload_failed": "La subida falló. Revisa tu conexión e intenta de nuevo.",
-  "upload_missing": "El archivo no llegó al almacenamiento."
+  "upload_missing": "El archivo no llegó al almacenamiento.",
+  "invalid_rut": "El RUT no es válido (revisa el dígito verificador).",
+  "invalid_level": "Ese nivel no está habilitado para la institución.",
+  "cross_institution": "Esa persona pertenece a otra institución.",
+  "institution_required": "Debes pertenecer a una institución para crear cursos.",
+  "student_not_in_institution": "El estudiante no pertenece a esta institución.",
+  "institution_country_locked": "El país de una institución no se puede cambiar.",
+  "course_institution_locked": "Un curso no se puede mover a otra institución."
 }

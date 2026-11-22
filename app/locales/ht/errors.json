@@ -54,5 +54,12 @@
   "translation_unavailable": "Tradiksyon asiste a pa aktive sou sèvè sa a.",
   "unexpected": "Yon erè inatandi rive. Eseye ankò.",
   "upload_failed": "Telechajman an echwe. Tcheke koneksyon ou epi eseye ankò.",
-  "upload_missing": "Fichye a pa rive nan depo a."
+  "upload_missing": "Fichye a pa rive nan depo a.",
+  "invalid_rut": "RUT la pa valab (verifye chif kontwòl la).",
+  "invalid_level": "Nivo sa a pa aktive pou enstitisyon an.",
+  "cross_institution": "Moun sa a nan yon lòt enstitisyon.",
+  "institution_required": "Ou dwe nan yon enstitisyon pou kreye klas.",
+  "student_not_in_institution": "Elèv la pa nan enstitisyon sa a.",
+  "institution_country_locked": "Ou pa ka chanje peyi yon enstitisyon.",
+  "course_institution_locked": "Ou pa ka deplase yon klas nan yon lòt enstitisyon."
 }

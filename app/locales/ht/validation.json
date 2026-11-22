@@ -16,5 +16,6 @@
   "password_number": "Modpas la dwe gen chif.",
   "prompt_required": "Ekri enonse kesyon an.",
   "required": "Chan sa a obligatwa.",
-  "too_long": "Twò long."
+  "too_long": "Twò long.",
+  "invalid_rut": "RUT pa valab."
 }

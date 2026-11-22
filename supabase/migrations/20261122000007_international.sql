@@ -250,6 +250,30 @@ language sql stable security definer set search_path = '' as $$
   order by i.country_code, i.name
 $$;
 
+-- Resumen para apoderados: solo de sus pupilos (nombres de curso incluidos,
+-- sin exponer contenidos ni otros estudiantes).
+create or replace function public.guardian_overview()
+returns table (student_id uuid, student_name text, institution_name text, course_id uuid, course_name text,
+               grade_avg numeric, grade_count int, sessions int, attended int, absences int)
+language sql stable security definer set search_path = '' as $$
+  select p.id, btrim(p.first_name || ' ' || p.last_name), i.name, c.id, c.name,
+    (select round(avg(g.grade), 1) from public.grades g where g.course_id = c.id and g.student_id = p.id),
+    (select count(*)::int from public.grades g where g.course_id = c.id and g.student_id = p.id),
+    (select count(*)::int from public.attendance_records r join public.attendance_sessions s on s.id = r.session_id
+       where s.course_id = c.id and r.student_id = p.id),
+    (select count(*)::int from public.attendance_records r join public.attendance_sessions s on s.id = r.session_id
+       where s.course_id = c.id and r.student_id = p.id and r.status in ('present', 'late')),
+    (select count(*)::int from public.attendance_records r join public.attendance_sessions s on s.id = r.session_id
+       where s.course_id = c.id and r.student_id = p.id and r.status = 'absent')
+  from public.guardian_links gl
+  join public.profiles p on p.id = gl.student_id
+  join public.institutions i on i.id = gl.institution_id
+  join public.course_members cm on cm.student_id = p.id and cm.status = 'active'
+  join public.courses c on c.id = cm.course_id and c.institution_id = gl.institution_id and c.deleted_at is null
+  where gl.guardian_id = auth.uid() and app.is_guardian_of(p.id)
+  order by p.last_name, p.first_name, c.name
+$$;
+
 -- =====================================================================
 -- Reglas de integridad entre instituciones
 -- =====================================================================
@@ -461,5 +485,5 @@ create trigger audit_guardian_links after insert or update or delete on public.g
 
 revoke all on all functions in schema app from public;
 grant execute on all functions in schema app to authenticated, service_role;
-revoke all on function public.my_institutions() from public;
-grant execute on function public.my_institutions() to authenticated;
+revoke all on function public.my_institutions(), public.guardian_overview() from public;
+grant execute on function public.my_institutions(), public.guardian_overview() to authenticated;

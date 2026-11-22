@@ -1,4 +1,12 @@
 import { type RouteConfig, index, layout, prefix, route } from "@react-router/dev/routes";
+import { COUNTRY_SLUGS } from "./countries/registry";
+
+// Entradas por país (el portal estático enlaza aquí): /chile, /chile/login, /chile/app, …
+const countryRoutes = COUNTRY_SLUGS.flatMap((slug) => [
+  route(slug, "routes/country/entry.tsx", { id: `country-${slug}` }),
+  route(`${slug}/login`, "routes/auth/login.tsx", { id: `login-${slug}` }),
+  route(`${slug}/app`, "routes/country/entry.tsx", { id: `country-app-${slug}` }),
+]);
 
 export default [
   index("routes/index.tsx"),
@@ -8,6 +16,8 @@ export default [
   route("auth/confirm", "routes/auth/confirm.tsx"),
   route("auth/callback", "routes/auth/callback.tsx"),
   route("logout", "routes/auth/logout.tsx"),
+  route("cambiar-pais", "routes/country/change.tsx"),
+  ...countryRoutes,
 
   // Endpoints (acciones/recursos sin UI)
   route("api/preferences", "routes/api/preferences.ts"),
@@ -48,6 +58,10 @@ export default [
       route("reports", "routes/app/reports.tsx"),
       route("profile", "routes/app/profile.tsx"),
       route("settings", "routes/app/settings.tsx"),
+      route("admin", "routes/app/admin/index.tsx"),
+      route("admin/institutions/:id", "routes/app/admin/institution.tsx"),
+      route("supervision", "routes/app/supervision.tsx"),
+      route("guardian", "routes/app/guardian.tsx"),
     ]),
   ]),
 ] satisfies RouteConfig;

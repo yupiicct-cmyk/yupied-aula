@@ -33,6 +33,9 @@ export async function sendAccessEmail(env: AppEnv, email: string, origin: string
  */
 export async function createStudent(env: AppEnv, supabase: DB, teacherId: string, courseId: string, input: StudentInput, origin: string) {
   await assertCourseTeacher(supabase, teacherId, courseId);
+  // Institución del curso leída con la identidad del profesor (RLS), nunca desde el formulario.
+  const { data: course } = await supabase.from("courses").select("institution_id").eq("id", courseId).maybeSingle();
+  if (!course) throw new AppError("forbidden", 403);
   const admin = createAdminClient(env);
   const password = input.access_mode === "password" ? input.temp_password : tempPassword(24);
 
@@ -43,7 +46,7 @@ export async function createStudent(env: AppEnv, supabase: DB, teacherId: string
     password,
     email_confirm: true,
     user_metadata: { first_name: input.first_name, last_name: input.last_name, internal_code: input.internal_code || null, locale: input.locale },
-    app_metadata: { initial_role: "student" },
+    app_metadata: { initial_role: "student", institution_id: course.institution_id, institution_role: "student" },
   });
   if (error) {
     if (error.code !== "email_exists" && error.status !== 422) throw new AppError("account_failed", 502, error.message);
