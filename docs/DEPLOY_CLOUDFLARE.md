@@ -5,7 +5,7 @@ Dos proyectos independientes:
 | Proyecto | Tipo | Host | Contenido |
 |---|---|---|---|
 | `yupied-portal` | Pages (estático) | `yupied.yupicct.com` | carpeta `portal/` |
-| `yupiii` | Worker | `app.yupied.yupicct.com` | la app (`npm run deploy:production`) |
+| `yupiii` | Worker | `yupied.cl.yupicct.com` | la app (`npm run deploy:production`) |
 
 > Nunca modificar los registros MX, SPF, DKIM ni DMARC de `yupicct.com`.
 
@@ -24,7 +24,7 @@ npx wrangler r2 bucket create yupiii-files-prod
 npm run deploy:production
 npx wrangler secret put SUPABASE_SECRET_KEY --env production
 ```
-Dominio: si `yupicct.com` está en la misma cuenta, descomentar `routes` en `wrangler.jsonc` (`app.yupied.yupicct.com`, `custom_domain: true`) y volver a desplegar. Cloudflare emite el certificado del host de segundo nivel automáticamente.
+Dominio: si `yupicct.com` está en la misma cuenta, descomentar `routes` en `wrangler.jsonc` (`yupied.cl.yupicct.com`, `custom_domain: true`) y volver a desplegar. Cloudflare emite el certificado del host de segundo nivel automáticamente.
 
 ## 3. Portal (Pages)
 ```bash
@@ -34,13 +34,13 @@ npx wrangler pages deploy portal --project-name yupied-portal
 Luego Pages → `yupied-portal` → Custom domains → `yupied.yupicct.com`. Si la app usa otro host, cambiar solo `portal/config.js` y los `href` de los botones de `portal/chile/` y `portal/haiti/`.
 
 ## 4. Supabase Auth
-Authentication → URL Configuration: Site URL `https://app.yupied.yupicct.com`; Redirect URLs `https://app.yupied.yupicct.com/auth/callback` y `/auth/confirm`. Desactivar "Allow new users to sign up". Configurar SMTP.
+Authentication → URL Configuration: Site URL `https://yupied.cl.yupicct.com`; Redirect URLs `https://yupied.cl.yupicct.com/auth/callback` y `/auth/confirm`. Desactivar "Allow new users to sign up". Configurar SMTP.
 
 ## 5. Primer administrador
 `npm run create-admin` (pide correo; usa la clave secreta localmente).
 
 ## 6. Verificación después del despliegue
 - `https://yupied.yupicct.com` → elegir Chile → botón → login "YupiEd Chile" en español.
-- `https://app.yupied.yupicct.com/haiti/login` → login en Kreyòl.
+- `https://yupied.cl.yupicct.com/haiti/login` → login en Kreyòl.
 - `/cambiar-pais` vuelve al portal.
 - Con el superadmin: Administración → crear una institución chilena con RUT válido; probar RUT inválido (debe rechazarse).

@@ -7,7 +7,7 @@ YupiEd es el producto; **YUPICCT — Conciencia Tecnológica** es la empresa. Un
 ```mermaid
 flowchart LR
   U[Usuario] --> P["Portal estático<br/>yupied.yupicct.com<br/>(Cloudflare Pages)"]
-  P -- "/chile/login · /haiti/login" --> W["App YupiEd<br/>app.yupied.yupicct.com<br/>(Cloudflare Worker, React Router SSR)"]
+  P -- "/chile/login · /haiti/login" --> W["App YupiEd<br/>yupied.cl.yupicct.com<br/>(Cloudflare Worker, React Router SSR)"]
   W -- "JWT del usuario · RLS" --> DB[("Supabase Postgres<br/>países · instituciones · académico")]
   W -- "clave secreta (solo backend, tras verificar permisos)" --> AUTH[Supabase Auth admin]
   W --> R2[("R2: archivos")]
