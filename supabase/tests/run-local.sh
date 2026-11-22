@@ -14,4 +14,5 @@ else
 fi
 for f in "$DIR"/../migrations/*.sql; do echo "→ $(basename "$f")"; $PSQL -d $DB -f "$f"; done
 $PSQL -d $DB -f "$DIR/rls_test.sql"
+$PSQL -d $DB -f "$DIR/rls_international_test.sql"
 [ "${GEN_TYPES:-0}" = "1" ] && python3 "$DIR/../../scripts/gen-db-types.py" "host=${PGHOST:-/tmp/pg} port=${PGPORT:-54322} user=postgres dbname=$DB"

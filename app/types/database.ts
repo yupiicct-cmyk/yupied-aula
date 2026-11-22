@@ -112,6 +112,18 @@ export type Database = {
         Update: {id?: string; course_id?: string; teacher_id?: string; student_id?: string; last_message_at?: string | null; created_at?: string; };
         Relationships: [{ foreignKeyName: "conversations_course_id_fkey"; columns: ["course_id"]; isOneToOne: false; referencedRelation: "courses"; referencedColumns: ["id"] }, { foreignKeyName: "conversations_teacher_id_fkey"; columns: ["teacher_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }, { foreignKeyName: "conversations_student_id_fkey"; columns: ["student_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }];
       };
+      countries: {
+        Row: {code: unknown; name_i18n: Json; default_locale: Database["public"]["Enums"]["locale_code"]; locales: (Database["public"]["Enums"]["locale_code"])[]; currencies: (string)[]; timezone: string; date_format: string; national_id_kind: string; config: Json; active: boolean; created_at: string; updated_at: string; };
+        Insert: {code: unknown; name_i18n?: Json; default_locale: Database["public"]["Enums"]["locale_code"]; locales: (Database["public"]["Enums"]["locale_code"])[]; currencies: (string)[]; timezone: string; date_format?: string; national_id_kind?: string; config?: Json; active?: boolean; created_at?: string; updated_at?: string; };
+        Update: {code?: unknown; name_i18n?: Json; default_locale?: Database["public"]["Enums"]["locale_code"]; locales?: (Database["public"]["Enums"]["locale_code"])[]; currencies?: (string)[]; timezone?: string; date_format?: string; national_id_kind?: string; config?: Json; active?: boolean; created_at?: string; updated_at?: string; };
+        Relationships: [];
+      };
+      country_admins: {
+        Row: {country_code: unknown; user_id: string; created_at: string; };
+        Insert: {country_code: unknown; user_id: string; created_at?: string; };
+        Update: {country_code?: unknown; user_id?: string; created_at?: string; };
+        Relationships: [{ foreignKeyName: "country_admins_country_code_fkey"; columns: ["country_code"]; isOneToOne: false; referencedRelation: "countries"; referencedColumns: ["code"] }, { foreignKeyName: "country_admins_user_id_fkey"; columns: ["user_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }];
+      };
       course_members: {
         Row: {course_id: string; student_id: string; status: string; enrolled_at: string; updated_at: string; };
         Insert: {course_id: string; student_id: string; status?: string; enrolled_at?: string; updated_at?: string; };
@@ -119,10 +131,10 @@ export type Database = {
         Relationships: [{ foreignKeyName: "course_members_course_id_fkey"; columns: ["course_id"]; isOneToOne: false; referencedRelation: "courses"; referencedColumns: ["id"] }, { foreignKeyName: "course_members_student_id_fkey"; columns: ["student_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }];
       };
       courses: {
-        Row: {id: string; name: string; description: string; owner_teacher_id: string; start_date: string | null; end_date: string | null; status: Database["public"]["Enums"]["course_status"]; cover_key: string | null; languages: (Database["public"]["Enums"]["locale_code"])[]; grade_scale_id: string | null; created_at: string; updated_at: string; deleted_at: string | null; };
-        Insert: {id?: string; name: string; description?: string; owner_teacher_id: string; start_date?: string | null; end_date?: string | null; status?: Database["public"]["Enums"]["course_status"]; cover_key?: string | null; languages?: (Database["public"]["Enums"]["locale_code"])[]; grade_scale_id?: string | null; created_at?: string; updated_at?: string; deleted_at?: string | null; };
-        Update: {id?: string; name?: string; description?: string; owner_teacher_id?: string; start_date?: string | null; end_date?: string | null; status?: Database["public"]["Enums"]["course_status"]; cover_key?: string | null; languages?: (Database["public"]["Enums"]["locale_code"])[]; grade_scale_id?: string | null; created_at?: string; updated_at?: string; deleted_at?: string | null; };
-        Relationships: [{ foreignKeyName: "courses_owner_teacher_id_fkey"; columns: ["owner_teacher_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }, { foreignKeyName: "courses_grade_scale_id_fkey"; columns: ["grade_scale_id"]; isOneToOne: false; referencedRelation: "grade_scales"; referencedColumns: ["id"] }];
+        Row: {id: string; name: string; description: string; owner_teacher_id: string; start_date: string | null; end_date: string | null; status: Database["public"]["Enums"]["course_status"]; cover_key: string | null; languages: (Database["public"]["Enums"]["locale_code"])[]; grade_scale_id: string | null; created_at: string; updated_at: string; deleted_at: string | null; institution_id: string; level_key: string | null; grade_key: string | null; };
+        Insert: {id?: string; name: string; description?: string; owner_teacher_id: string; start_date?: string | null; end_date?: string | null; status?: Database["public"]["Enums"]["course_status"]; cover_key?: string | null; languages?: (Database["public"]["Enums"]["locale_code"])[]; grade_scale_id?: string | null; created_at?: string; updated_at?: string; deleted_at?: string | null; institution_id: string; level_key?: string | null; grade_key?: string | null; };
+        Update: {id?: string; name?: string; description?: string; owner_teacher_id?: string; start_date?: string | null; end_date?: string | null; status?: Database["public"]["Enums"]["course_status"]; cover_key?: string | null; languages?: (Database["public"]["Enums"]["locale_code"])[]; grade_scale_id?: string | null; created_at?: string; updated_at?: string; deleted_at?: string | null; institution_id?: string; level_key?: string | null; grade_key?: string | null; };
+        Relationships: [{ foreignKeyName: "courses_owner_teacher_id_fkey"; columns: ["owner_teacher_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }, { foreignKeyName: "courses_grade_scale_id_fkey"; columns: ["grade_scale_id"]; isOneToOne: false; referencedRelation: "grade_scales"; referencedColumns: ["id"] }, { foreignKeyName: "courses_institution_id_fkey"; columns: ["institution_id"]; isOneToOne: false; referencedRelation: "institutions"; referencedColumns: ["id"] }];
       };
       grade_scales: {
         Row: {id: string; name: string; country: string; min_grade: number; max_grade: number; pass_grade: number; exigency: number; decimals: number; is_default: boolean; created_at: string; updated_at: string; };
@@ -135,6 +147,24 @@ export type Database = {
         Insert: {id?: string; course_id: string; student_id: string; activity_id?: string | null; assessment_id?: string | null; title?: string; score: number; max_score: number; grade?: number | null; weight?: number; observation?: string; graded_by?: string | null; created_at?: string; updated_at?: string; };
         Update: {id?: string; course_id?: string; student_id?: string; activity_id?: string | null; assessment_id?: string | null; title?: string; score?: number; max_score?: number; grade?: number | null; weight?: number; observation?: string; graded_by?: string | null; created_at?: string; updated_at?: string; };
         Relationships: [{ foreignKeyName: "grades_course_id_fkey"; columns: ["course_id"]; isOneToOne: false; referencedRelation: "courses"; referencedColumns: ["id"] }, { foreignKeyName: "grades_student_id_fkey"; columns: ["student_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }, { foreignKeyName: "grades_activity_id_fkey"; columns: ["activity_id"]; isOneToOne: false; referencedRelation: "activities"; referencedColumns: ["id"] }, { foreignKeyName: "grades_assessment_id_fkey"; columns: ["assessment_id"]; isOneToOne: false; referencedRelation: "assessments"; referencedColumns: ["id"] }, { foreignKeyName: "grades_graded_by_fkey"; columns: ["graded_by"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }];
+      };
+      guardian_links: {
+        Row: {institution_id: string; guardian_id: string; student_id: string; relationship: string; created_at: string; };
+        Insert: {institution_id: string; guardian_id: string; student_id: string; relationship?: string; created_at?: string; };
+        Update: {institution_id?: string; guardian_id?: string; student_id?: string; relationship?: string; created_at?: string; };
+        Relationships: [{ foreignKeyName: "guardian_links_institution_id_fkey"; columns: ["institution_id"]; isOneToOne: false; referencedRelation: "institutions"; referencedColumns: ["id"] }, { foreignKeyName: "guardian_links_guardian_id_fkey"; columns: ["guardian_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }, { foreignKeyName: "guardian_links_student_id_fkey"; columns: ["student_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }];
+      };
+      institution_members: {
+        Row: {institution_id: string; user_id: string; role: Database["public"]["Enums"]["institution_role"]; status: string; created_at: string; updated_at: string; };
+        Insert: {institution_id: string; user_id: string; role: Database["public"]["Enums"]["institution_role"]; status?: string; created_at?: string; updated_at?: string; };
+        Update: {institution_id?: string; user_id?: string; role?: Database["public"]["Enums"]["institution_role"]; status?: string; created_at?: string; updated_at?: string; };
+        Relationships: [{ foreignKeyName: "institution_members_institution_id_fkey"; columns: ["institution_id"]; isOneToOne: false; referencedRelation: "institutions"; referencedColumns: ["id"] }, { foreignKeyName: "institution_members_user_id_fkey"; columns: ["user_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }];
+      };
+      institutions: {
+        Row: {id: string; country_code: unknown; name: string; short_name: string; legal_id: string | null; official_code: string | null; levels: (string)[]; settings: Json; status: string; created_at: string; updated_at: string; };
+        Insert: {id?: string; country_code: unknown; name: string; short_name?: string; legal_id?: string | null; official_code?: string | null; levels?: (string)[]; settings?: Json; status?: string; created_at?: string; updated_at?: string; };
+        Update: {id?: string; country_code?: unknown; name?: string; short_name?: string; legal_id?: string | null; official_code?: string | null; levels?: (string)[]; settings?: Json; status?: string; created_at?: string; updated_at?: string; };
+        Relationships: [{ foreignKeyName: "institutions_country_code_fkey"; columns: ["country_code"]; isOneToOne: false; referencedRelation: "countries"; referencedColumns: ["code"] }];
       };
       lesson_materials: {
         Row: {lesson_id: string; material_id: string; position: number; created_at: string; };
@@ -197,10 +227,10 @@ export type Database = {
         Relationships: [{ foreignKeyName: "notifications_user_id_fkey"; columns: ["user_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }];
       };
       profiles: {
-        Row: {id: string; email: string; first_name: string; last_name: string; internal_code: string | null; avatar_key: string | null; joined_on: string; status: Database["public"]["Enums"]["user_status"]; locale: Database["public"]["Enums"]["locale_code"]; created_at: string; updated_at: string; deleted_at: string | null; must_change_password: boolean; };
-        Insert: {id: string; email: string; first_name?: string; last_name?: string; internal_code?: string | null; avatar_key?: string | null; joined_on?: string; status?: Database["public"]["Enums"]["user_status"]; locale?: Database["public"]["Enums"]["locale_code"]; created_at?: string; updated_at?: string; deleted_at?: string | null; must_change_password?: boolean; };
-        Update: {id?: string; email?: string; first_name?: string; last_name?: string; internal_code?: string | null; avatar_key?: string | null; joined_on?: string; status?: Database["public"]["Enums"]["user_status"]; locale?: Database["public"]["Enums"]["locale_code"]; created_at?: string; updated_at?: string; deleted_at?: string | null; must_change_password?: boolean; };
-        Relationships: [];
+        Row: {id: string; email: string; first_name: string; last_name: string; internal_code: string | null; avatar_key: string | null; joined_on: string; status: Database["public"]["Enums"]["user_status"]; locale: Database["public"]["Enums"]["locale_code"]; created_at: string; updated_at: string; deleted_at: string | null; must_change_password: boolean; national_id: string | null; national_id_country: unknown | null; };
+        Insert: {id: string; email: string; first_name?: string; last_name?: string; internal_code?: string | null; avatar_key?: string | null; joined_on?: string; status?: Database["public"]["Enums"]["user_status"]; locale?: Database["public"]["Enums"]["locale_code"]; created_at?: string; updated_at?: string; deleted_at?: string | null; must_change_password?: boolean; national_id?: string | null; national_id_country?: unknown | null; };
+        Update: {id?: string; email?: string; first_name?: string; last_name?: string; internal_code?: string | null; avatar_key?: string | null; joined_on?: string; status?: Database["public"]["Enums"]["user_status"]; locale?: Database["public"]["Enums"]["locale_code"]; created_at?: string; updated_at?: string; deleted_at?: string | null; must_change_password?: boolean; national_id?: string | null; national_id_country?: unknown | null; };
+        Relationships: [{ foreignKeyName: "profiles_national_id_country_fkey"; columns: ["national_id_country"]; isOneToOne: false; referencedRelation: "countries"; referencedColumns: ["code"] }];
       };
       roles: {
         Row: {key: string; name_i18n: Json; created_at: string; };
@@ -272,6 +302,7 @@ export type Database = {
       course_stats: { Args: { p_course: string; }; Returns: Json };
       grade_attempt: { Args: { p_attempt: string; p_scores: Json; p_feedback?: string; }; Returns: Database["public"]["Tables"]["assessment_attempts"]["Row"] };
       mark_notifications_read: { Args: { p_ids?: string[]; }; Returns: undefined };
+      my_institutions: { Args: {  }; Returns: unknown[] };
       save_assessment_answers: { Args: { p_attempt: string; p_answers: Json; }; Returns: undefined };
       start_assessment: { Args: { p_assessment: string; }; Returns: Database["public"]["Tables"]["assessment_attempts"]["Row"] };
       submit_activity: { Args: { p_activity: string; p_answers?: Json; p_text?: string; p_final?: boolean; }; Returns: Database["public"]["Tables"]["submissions"]["Row"] };
@@ -285,6 +316,7 @@ export type Database = {
       calendar_kind: "class" | "lesson" | "assessment" | "deadline" | "announcement" | "event";
       content_status: "draft" | "scheduled" | "published" | "archived";
       course_status: "draft" | "active" | "archived";
+      institution_role: "institution_admin" | "director" | "inspector" | "teacher" | "assistant" | "student" | "guardian";
       locale_code: "es" | "ht" | "fr";
       question_kind: "single_choice" | "multiple_choice" | "true_false" | "open" | "fill_blanks" | "matching" | "ordering";
       submission_status: "draft" | "submitted" | "graded" | "returned";

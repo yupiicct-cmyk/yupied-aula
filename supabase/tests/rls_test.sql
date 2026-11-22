@@ -14,9 +14,12 @@ insert into auth.users (id, email, raw_app_meta_data, raw_user_meta_data) values
  ('00000000-0000-0000-0000-0000000000c3', 'est3@test.cl',   '{"initial_role":"student"}',    '{"first_name":"Luis"}'),
  ('00000000-0000-0000-0000-0000000000d9', 'nadie@test.cl',  '{}',                            '{"first_name":"X"}');
 
-insert into public.courses (id, name, owner_teacher_id, status) values
- ('10000000-0000-0000-0000-000000000001', 'Curso 1', '00000000-0000-0000-0000-0000000000b1', 'active'),
- ('10000000-0000-0000-0000-000000000002', 'Curso 2', '00000000-0000-0000-0000-0000000000b2', 'active');
+-- Institución chilena de prueba (los cursos usan la escala 1,0–7,0 del país)
+insert into public.institutions (id, country_code, name, legal_id, levels) values
+ ('a0000000-0000-4000-8000-0000000000c1', 'CL', 'Colegio de Prueba', '76.086.428-5', array['basica','media']);
+insert into public.courses (id, name, owner_teacher_id, status, institution_id) values
+ ('10000000-0000-0000-0000-000000000001', 'Curso 1', '00000000-0000-0000-0000-0000000000b1', 'active', 'a0000000-0000-4000-8000-0000000000c1'),
+ ('10000000-0000-0000-0000-000000000002', 'Curso 2', '00000000-0000-0000-0000-0000000000b2', 'active', 'a0000000-0000-4000-8000-0000000000c1');
 insert into public.course_members (course_id, student_id) values
  ('10000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-0000000000c1'),
  ('10000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-0000000000c2'),
