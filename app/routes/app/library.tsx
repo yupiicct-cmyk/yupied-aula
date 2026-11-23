@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getStore } from "~/services/storage/store.server";
 import { Form, Link, useFetcher, useSearchParams } from "react-router";
 import { useTranslation } from "react-i18next";
 import { Download, Eye, EyeOff, FileText, Film, Folder, FolderPlus, Image as ImageIcon, Music, Presentation, RefreshCw, Search, Sheet, Trash2 } from "lucide-react";
@@ -80,7 +81,7 @@ export async function action({ request, context }: Route.ActionArgs) {
       // Borrado lógico del registro (conserva historial de accesos) y eliminación del binario en R2.
       check(await supabase.from("materials").update({ deleted_at: new Date().toISOString(), status: "pending" }).eq("id", id.data));
       check(await supabase.from("lesson_materials").delete().eq("material_id", id.data));
-      await env.FILES.delete(m.object_key);
+      await getStore(env).delete(m.object_key);
     } else return failCode("invalid_data");
     return { ok: true as const };
   } catch (e) {

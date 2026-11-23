@@ -4,6 +4,7 @@ import { requireUser } from "~/services/auth.server";
 import { getEnv } from "~/services/env.server";
 import { assertFileAllowed, authorizeKey } from "~/services/storage/r2.server";
 import { toAppError } from "~/utils/errors";
+import { getStore } from "~/services/storage/store.server";
 
 /**
  * Subida a través del Worker (cuando no hay credenciales S3 de R2 configuradas,
@@ -20,7 +21,7 @@ export async function action({ request, context, params }: Route.ActionArgs) {
     const size = Number(request.headers.get("Content-Length") ?? "0");
     assertFileAllowed(env, mime, key.split("/").pop() ?? "", size, target.kind);
     if (!request.body) return data({ ok: false, error: "invalid_data" }, { status: 400 });
-    await env.FILES.put(key, request.body, { httpMetadata: { contentType: mime } });
+    await getStore(env).put(key, request.body, mime, size);
     return { ok: true };
   } catch (e) {
     const err = toAppError(e);

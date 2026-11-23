@@ -30,13 +30,13 @@
         "APP_NAME": "YupiEd",
         "SUPABASE_URL": "https://ifbmxalfqiyqlqdpenbo.supabase.co",
         "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_PBDo9bLzBrQjQIFhvZQZ4g_ZSOSaW2R",
-        "R2_BUCKET_NAME": "yupiii-files-prod",
+        "R2_BUCKET_NAME": "",
         "R2_ACCOUNT_ID": "",
-        "MAX_UPLOAD_MB": "200",
+        // Archivos en Supabase Storage (plan gratuito: máx. 50 MB por archivo)
+        "MAX_UPLOAD_MB": "50",
         // Portal estático (Cloudflare Pages, proyecto yupied-portal)
         "PORTAL_URL": "https://yupied.yupicct.com"
       },
-      "r2_buckets": [{ "binding": "FILES", "bucket_name": "yupiii-files-prod" }],
       "ratelimits": [
         { "name": "AUTH_LIMITER", "namespace_id": "2001", "simple": { "limit": 10, "period": 60 } },
         { "name": "API_LIMITER", "namespace_id": "2002", "simple": { "limit": 120, "period": 60 } }

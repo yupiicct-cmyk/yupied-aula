@@ -7,6 +7,7 @@ import { getEnv } from "~/services/env.server";
 import { rateLimit } from "~/services/cloudflare/ratelimit.server";
 import { assertFileAllowed, authorizeKey, canPresign, presignPut, safeFileName } from "~/services/storage/r2.server";
 import { AppError, toAppError } from "~/utils/errors";
+import { getStore } from "~/services/storage/store.server";
 
 const initSchema = z.object({
   intent: z.literal("init"),
@@ -40,16 +41,17 @@ export async function action({ request, context }: Route.ActionArgs) {
     if ((body as { intent?: string }).intent === "complete") {
       const c = completeSchema.parse(body);
       const target = await authorizeKey(supabase, user, c.key);
-      const head = await env.FILES.head(c.key);
+      const store = getStore(env);
+      const head = await store.head(c.key);
       if (!head) throw new AppError("upload_missing", 400);
-      const mime = head.httpMetadata?.contentType ?? "application/octet-stream";
+      const mime = head.contentType;
       const name = c.key.split("/").pop()!.replace(/^[0-9a-f-]{36}-/, "");
       assertFileAllowed(env, mime, name, head.size, target.kind, maxMb);
       if (target.kind === "material") {
         const { data: prev } = await supabase.from("materials").select("object_key,status").eq("id", target.materialId).single();
         const { error } = await supabase.from("materials").update({ status: "ready", size_bytes: head.size, mime_type: mime, object_key: c.key, original_name: name }).eq("id", target.materialId);
         if (error) throw error;
-        if (prev && prev.object_key !== c.key && prev.status === "ready") context.get(cloudflareContext).ctx.waitUntil(env.FILES.delete(prev.object_key));
+        if (prev && prev.object_key !== c.key && prev.status === "ready") context.get(cloudflareContext).ctx.waitUntil(store.delete(prev.object_key));
         return { ok: true, id: target.materialId };
       }
       if (target.kind === "submission_file") {

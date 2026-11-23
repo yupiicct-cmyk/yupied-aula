@@ -9,7 +9,8 @@ export interface AppSecrets {
 }
 
 export interface AppEnv extends AppSecrets {
-  FILES: R2Bucket;
+  /** R2 opcional: sin él se usa Supabase Storage (plan gratuito, sin tarjeta). */
+  FILES?: R2Bucket;
   AUTH_LIMITER?: RateLimit;
   API_LIMITER?: RateLimit;
   AI?: { run(model: string, input: Record<string, unknown>): Promise<unknown> };

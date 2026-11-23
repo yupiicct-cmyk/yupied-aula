@@ -3,6 +3,7 @@ import type { AppEnv } from "~/services/env.server";
 import type { DB } from "~/services/supabase/server";
 import type { SessionInfo } from "~/services/auth.server";
 import { AppError } from "~/utils/errors";
+import { getStore } from "~/services/storage/store.server";
 
 export const ALLOWED_MIME: Record<string, string[]> = {
   "application/pdf": ["pdf"],
@@ -32,7 +33,7 @@ export function assertFileAllowed(env: AppEnv, mime: string, name: string, size:
 }
 
 export function canPresign(env: AppEnv) {
-  return Boolean(env.R2_ACCESS_KEY_ID && env.R2_SECRET_ACCESS_KEY && env.R2_ACCOUNT_ID && env.R2_ACCOUNT_ID !== "REEMPLAZAR");
+  return Boolean(env.FILES && env.R2_ACCESS_KEY_ID && env.R2_SECRET_ACCESS_KEY && env.R2_ACCOUNT_ID && env.R2_ACCOUNT_ID !== "REEMPLAZAR");
 }
 
 /** URL PUT prefirmada (15 min) para subir directo a R2 sin pasar por el Worker (videos grandes). */
@@ -72,37 +73,19 @@ export async function authorizeKey(supabase: DB, user: SessionInfo, key: string)
   throw new AppError("forbidden", 403);
 }
 
-/** Respuesta de descarga con soporte de Range (videos/audio). */
+/** Respuesta de descarga con soporte de Range (videos/audio), desde R2 o Supabase Storage. */
 export async function streamObject(env: AppEnv, request: Request, key: string, fileName: string, opts: { download?: boolean; mime?: string } = {}) {
-  const range = request.headers.get("Range")?.match(/^bytes=(\d*)-(\d*)$/);
-  let obj: R2ObjectBody | R2Object | null;
-  if (range) {
-    const head = await env.FILES.head(key);
-    if (!head) throw new AppError("not_found", 404);
-    const start = range[1] ? Number(range[1]) : Math.max(0, head.size - Number(range[2]));
-    const end = range[1] && range[2] ? Math.min(Number(range[2]), head.size - 1) : head.size - 1;
-    if (start >= head.size || start > end) return new Response(null, { status: 416, headers: { "Content-Range": `bytes */${head.size}` } });
-    obj = await env.FILES.get(key, { range: { offset: start, length: end - start + 1 } });
-    if (!obj || !("body" in obj)) throw new AppError("not_found", 404);
-    const h = baseHeaders(obj, fileName, opts);
-    h.set("Content-Range", `bytes ${start}-${end}/${head.size}`);
-    h.set("Content-Length", String(end - start + 1));
-    return new Response(obj.body, { status: 206, headers: h });
-  }
-  obj = await env.FILES.get(key);
-  if (!obj || !("body" in obj)) throw new AppError("not_found", 404);
-  const h = baseHeaders(obj, fileName, opts);
-  h.set("Content-Length", String(obj.size));
-  return new Response(obj.body, { headers: h });
-}
-
-function baseHeaders(obj: R2Object, fileName: string, opts: { download?: boolean; mime?: string }) {
+  const obj = await getStore(env).get(key, request.headers.get("Range"));
+  if (obj === "unsatisfiable") return new Response(null, { status: 416 });
+  if (!obj) throw new AppError("not_found", 404);
   const h = new Headers();
-  h.set("Content-Type", opts.mime ?? obj.httpMetadata?.contentType ?? "application/octet-stream");
+  h.set("Content-Type", opts.mime ?? obj.contentType);
   h.set("Content-Disposition", `${opts.download ? "attachment" : "inline"}; filename*=UTF-8''${encodeURIComponent(fileName)}`);
   h.set("Accept-Ranges", "bytes");
   h.set("Cache-Control", "private, max-age=300");
   h.set("X-Content-Type-Options", "nosniff");
-  h.set("ETag", obj.httpEtag);
-  return h;
+  if (obj.etag) h.set("ETag", obj.etag);
+  if (obj.length) h.set("Content-Length", String(obj.length));
+  if (obj.contentRange) h.set("Content-Range", obj.contentRange);
+  return new Response(obj.body, { status: obj.status, headers: h });
 }
