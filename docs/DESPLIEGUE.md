@@ -12,7 +12,7 @@ Los entornos están separados: **desarrollo** usa Supabase local y un bucket R2 
 npm install
 npx supabase start                 # PostgreSQL + Auth + correo de prueba (Docker)
 npx supabase db reset              # aplica supabase/migrations
-cp .dev.vars.example .dev.vars     # pega la "secret key" que muestra `supabase start`
+cp docs/dev.vars.ejemplo .dev.vars     # pega la "secret key" que muestra `supabase start`
 # en wrangler.jsonc → vars: SUPABASE_PUBLISHABLE_KEY = la "publishable key" local
 npm run dev                        # http://localhost:5173
 SUPABASE_URL=http://127.0.0.1:54321 SUPABASE_SECRET_KEY=... npm run create-admin -- tu@correo.cl Nombre Apellido superadmin

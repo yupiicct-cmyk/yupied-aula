@@ -3,7 +3,7 @@ build/
 .react-router/
 .wrangler/
 .dev.vars*
-!.dev.vars.example
+!docs/dev.vars.ejemplo
 worker-configuration.d.ts
 supabase/.temp/
 coverage/
