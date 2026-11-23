@@ -1,6 +1,6 @@
 # YupiEd Chile
 
-Entrada: `https://yupied.cl.yupicct.com/chile/login`. Mismo aula que Haití, con configuración chilena.
+Entrada: `https://aulavirtual.yupicct.com/chile/login`. Mismo aula que Haití, con configuración chilena.
 
 ## Configuración
 - País `CL`, español, CLP, `America/Santiago`, fechas DD/MM/YYYY.

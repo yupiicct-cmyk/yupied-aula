@@ -25,7 +25,7 @@
       "name": "yupiii",
       // Dominio de YupiEd Chile (Custom Domain del Worker).
       // Crea solo un registro para este host; no toca MX/SPF/DKIM/DMARC.
-      "routes": [{ "pattern": "yupied.cl.yupicct.com", "custom_domain": true }],
+      "routes": [{ "pattern": "aulavirtual.yupicct.com", "custom_domain": true }],
       "vars": {
         "APP_NAME": "YupiEd",
         "SUPABASE_URL": "https://ifbmxalfqiyqlqdpenbo.supabase.co",

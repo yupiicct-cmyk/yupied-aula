@@ -12,7 +12,7 @@ La plataforma académica que antes se llamaba "Yupiii" (trilingüe Kreyòl / Fra
 Nada se borra; la migración se puede aplicar sobre datos reales.
 
 ## Rutas
-- Entrada: `https://yupied.cl.yupicct.com/haiti/login` (idioma por defecto: Kreyòl).
+- Entrada: `https://aulavirtual.yupicct.com/haiti/login` (idioma por defecto: Kreyòl).
 - Todas las pantallas del aula siguen en `/app/...`.
 
 ## Qué falta para Haití (no existe aún en el código)

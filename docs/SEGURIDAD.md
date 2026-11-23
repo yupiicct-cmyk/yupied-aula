@@ -24,7 +24,7 @@
 HSTS, X-Frame-Options SAMEORIGIN, X-Content-Type-Options, Referrer-Policy y Permissions-Policy (en `workers/app.ts`; aún no hay Content-Security-Policy); limitador de intentos de login (`AUTH_LIMITER`) y de API; HTML enriquecido saneado en el servidor; descargas de archivos a través del Worker con verificación de permisos.
 
 ## Dominio y correo
-El despliegue no toca registros MX, SPF, DKIM ni DMARC de `yupicct.com`. La app usa un Custom Domain de Worker (`yupied.cl.yupicct.com`), que crea solo el registro de ese host.
+El despliegue no toca registros MX, SPF, DKIM ni DMARC de `yupicct.com`. La app usa un Custom Domain de Worker (`aulavirtual.yupicct.com`), que crea solo el registro de ese host.
 
 ## Pendientes de configuración (Supabase Auth)
 Desactivar registro público, Site URL y Redirect URLs al dominio final, SMTP propio, y revisar los asesores de seguridad tras aplicar la migración 7.

@@ -38,7 +38,7 @@ Estructuras haitianas pedidas que **no existían** en el código (no se inventan
 ## 3. Decisiones
 
 1. **Se reutiliza la plataforma existente como núcleo común** (no se crea una segunda app para Chile). Chile y Haití son configuraciones de país sobre el mismo código y la misma base de datos, separadas por institución.
-2. **Portal estático aparte** (elección del usuario): el portal del ZIP se publica en Cloudflare Pages en `yupied.yupicct.com`; la app vive en `yupied.cl.yupicct.com` (Worker). El portal enlaza a `/<país>/login` de la app.
+2. **Portal estático aparte** (elección del usuario): el portal del ZIP se publica en Cloudflare Pages en `yupied.yupicct.com`; la app vive en `aulavirtual.yupicct.com` (Worker). El portal enlaza a `/<país>/login` de la app.
 3. **Migración 7 no destructiva**: agrega tablas/columnas/políticas; crea la institución inicial "YupiEd Haïti — Institution initiale" y le asigna los cursos y personas existentes. No borra ni reinicia nada.
 4. **No se aplicó la migración 7 en producción** (regla: no modificar producción sin autorización). Está probada en PostgreSQL local con las 7 migraciones y 129 aserciones.
 5. El país **nunca se decide por IP**: solo por elección explícita (portal → cookie `yupied_country`) y, dentro de la app, por la institución a la que el usuario pertenece según la base de datos.

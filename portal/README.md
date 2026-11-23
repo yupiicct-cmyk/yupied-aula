@@ -20,7 +20,7 @@ No reemplazar los registros MX, SPF, DKIM ni DMARC del dominio.
 
 ## Conexión con la app
 Los botones de `/chile/` y `/haiti/` llevan a la aplicación YupiEd (`/chile/login`, `/haiti/login`).
-La dirección de la app está en `config.js` (`window.YUPIED_URLS`: Chile → yupied.cl.yupicct.com, Haití → yupied.ht.yupicct.com) y, como respaldo sin JavaScript, en el `href` de cada botón.
+La dirección de la app está en `config.js` (`window.YUPIED_URLS`: Chile → aulavirtual.yupicct.com, Haití → yupied.ht.yupicct.com) y, como respaldo sin JavaScript, en el `href` de cada botón.
 Al usar "Cambiar país" dentro de la app se vuelve a `/?cambiar=1`, que olvida el país guardado.
 
 Publicación por línea de comandos: `npx wrangler pages deploy portal --project-name yupied-portal` (desde la raíz del repositorio). Ver `docs/DEPLOY_CLOUDFLARE.md`.
