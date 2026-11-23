@@ -2,7 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   // Configuración de PRODUCCIÓN por defecto (la usa Cloudflare Workers Builds).
   // Desarrollo local: CLOUDFLARE_ENV=dev npm run dev
-  "name": "yupied-aula",
+  "name": "aulavirtual",
   "main": "./workers/app.ts",
   "compatibility_date": "2026-11-12",
   "observability": { "enabled": true },
@@ -27,7 +27,7 @@
   ],
   "env": {
     "dev": {
-      "name": "yupied-aula-dev",
+      "name": "aulavirtual-dev",
       "routes": [],
       "vars": {
         "APP_NAME": "YupiEd (dev)",
