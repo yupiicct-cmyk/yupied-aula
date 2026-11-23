@@ -3,11 +3,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "react-router dev",
+    "dev": "cross-env CLOUDFLARE_ENV=dev react-router dev",
     "build": "react-router build",
     "preview": "npm run build && vite preview",
     "deploy": "npm run build && wrangler deploy",
-    "deploy:production": "cross-env CLOUDFLARE_ENV=production npm run build && wrangler deploy",
+    "deploy:production": "npm run build && wrangler deploy",
     "cf-typegen": "wrangler types && react-router typegen",
     "typecheck": "npm run cf-typegen && tsc && tsc -p tests",
     "test": "vitest run",

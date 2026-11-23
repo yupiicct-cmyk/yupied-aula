@@ -1,45 +1,46 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "yupiii-dev",
+  // Configuración de PRODUCCIÓN por defecto (la usa Cloudflare Workers Builds).
+  // Desarrollo local: CLOUDFLARE_ENV=dev npm run dev
+  "name": "yupied-aula",
   "main": "./workers/app.ts",
   "compatibility_date": "2026-11-12",
   "observability": { "enabled": true },
   "upload_source_maps": true,
-  // Variables públicas (no secretas). Los secretos van con `wrangler secret put` o .dev.vars
+  // Dominio de la app (Custom Domain del Worker). Solo crea el registro de este host;
+  // no toca MX/SPF/DKIM/DMARC.
+  "routes": [{ "pattern": "aulavirtual.yupicct.com", "custom_domain": true }],
+  // Variables públicas. Los secretos (SUPABASE_SECRET_KEY) van como secreto del Worker.
   "vars": {
     "APP_NAME": "YupiEd",
-    "SUPABASE_URL": "http://127.0.0.1:54321",
-    "SUPABASE_PUBLISHABLE_KEY": "",
-    "R2_BUCKET_NAME": "yupiii-files-dev",
+    "SUPABASE_URL": "https://ifbmxalfqiyqlqdpenbo.supabase.co",
+    "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_PBDo9bLzBrQjQIFhvZQZ4g_ZSOSaW2R",
+    "R2_BUCKET_NAME": "",
     "R2_ACCOUNT_ID": "",
-    "MAX_UPLOAD_MB": "200",
-    "PORTAL_URL": "http://localhost:8788"
+    // Archivos en Supabase Storage (plan gratuito: máx. 50 MB por archivo). Sin R2.
+    "MAX_UPLOAD_MB": "50",
+    "PORTAL_URL": "https://yupied.yupicct.com"
   },
-  "r2_buckets": [{ "binding": "FILES", "bucket_name": "yupiii-files-dev" }],
   "ratelimits": [
-    { "name": "AUTH_LIMITER", "namespace_id": "1001", "simple": { "limit": 10, "period": 60 } },
-    { "name": "API_LIMITER", "namespace_id": "1002", "simple": { "limit": 120, "period": 60 } }
+    { "name": "AUTH_LIMITER", "namespace_id": "2001", "simple": { "limit": 10, "period": 60 } },
+    { "name": "API_LIMITER", "namespace_id": "2002", "simple": { "limit": 120, "period": 60 } }
   ],
   "env": {
-    "production": {
-      "name": "yupiii",
-      // Dominio de YupiEd Chile (Custom Domain del Worker).
-      // Crea solo un registro para este host; no toca MX/SPF/DKIM/DMARC.
-      "routes": [{ "pattern": "aulavirtual.yupicct.com", "custom_domain": true }],
+    "dev": {
+      "name": "yupied-aula-dev",
+      "routes": [],
       "vars": {
-        "APP_NAME": "YupiEd",
-        "SUPABASE_URL": "https://ifbmxalfqiyqlqdpenbo.supabase.co",
-        "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_PBDo9bLzBrQjQIFhvZQZ4g_ZSOSaW2R",
+        "APP_NAME": "YupiEd (dev)",
+        "SUPABASE_URL": "http://127.0.0.1:54321",
+        "SUPABASE_PUBLISHABLE_KEY": "",
         "R2_BUCKET_NAME": "",
         "R2_ACCOUNT_ID": "",
-        // Archivos en Supabase Storage (plan gratuito: máx. 50 MB por archivo)
         "MAX_UPLOAD_MB": "50",
-        // Portal estático (Cloudflare Pages, proyecto yupied-portal)
-        "PORTAL_URL": "https://yupied.yupicct.com"
+        "PORTAL_URL": "http://localhost:8788"
       },
       "ratelimits": [
-        { "name": "AUTH_LIMITER", "namespace_id": "2001", "simple": { "limit": 10, "period": 60 } },
-        { "name": "API_LIMITER", "namespace_id": "2002", "simple": { "limit": 120, "period": 60 } }
+        { "name": "AUTH_LIMITER", "namespace_id": "1001", "simple": { "limit": 10, "period": 60 } },
+        { "name": "API_LIMITER", "namespace_id": "1002", "simple": { "limit": 120, "period": 60 } }
       ]
     }
   }
